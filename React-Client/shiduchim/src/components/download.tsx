@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../store/store';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../store/store';
 import { downloadFile } from '../store/filesStore';
 
 const DownloadFile: React.FC = () => {
   const [fileName, setFileName] = useState<string>('');
   const dispatch = useDispatch<AppDispatch>();
-//   const error = useSelector((state: RootState) => state.files.error);
 
   const handleDownload = () => {
     if (!fileName) {
@@ -26,7 +25,6 @@ const DownloadFile: React.FC = () => {
         onChange={(e) => setFileName(e.target.value)}
       />
       <button onClick={handleDownload}>Download</button>
-      {/* {error && <p style={{ color: 'red' }}>{error}</p>} */}
     </div>
   );
 };

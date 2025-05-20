@@ -27,7 +27,7 @@ export default ({update,closeForm}:{update:boolean,closeForm:()=>void}) => {
       try {
        console.log(user);
         console.log('Sending update request with user ID:', user.id);
-        const res = await axios.put(url + '/User/'+user.id, {
+         await axios.put(url + '/User/'+user.id, {
           username: updatedUser.username,
           email: updatedUser.email,
           passwordHash:updatedUser.passwordHash,

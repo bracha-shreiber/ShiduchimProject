@@ -2,18 +2,18 @@ import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Box, TextField, Button, Dialog, DialogTitle, DialogContent } from "@mui/material";
-import { IsLoggedIn, url, userContext } from "../../App";
+import { IsLoggedIn, userContext } from "../../App";
 import { setError } from "../../store/ErrorSlice";
 import { useDispatch } from "react-redux";
 import { User } from "../../types/user";
 import store, { AppDispatch } from "../../store/store";
 import { addUser } from "../../store/userStore";
-import { Register_Login_Response } from "../../types/register_login";
+// import { Register_Login_Response } from "../../types/register_login";
 import { useNavigate } from "react-router-dom";
 import Header from "../header";
 
 export default () => {
-    const { user, userDispatch } = useContext(userContext);
+    const { userDispatch } = useContext(userContext);
     const { LoggedIn, setLoggedIn } = useContext(IsLoggedIn);
       const [close, setClose] = useState<boolean>(true)
     const { register, handleSubmit, formState: { errors } } = useForm();

@@ -1,13 +1,13 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { IsLoggedIn, userContext } from '../App';
+import { IsLoggedIn } from '../App';
 // import UserFiles from './user/userFiles';
-import DownloadFile from './download';
+// import DownloadFile from './download';
 import Avatar from './user/avatar';
 
 const Header = () => {
   const { LoggedIn } = useContext(IsLoggedIn);
-  const { user } = useContext(userContext);
+  // const { user } = useContext(userContext);
 
   return (
     <header style={styles.header}>

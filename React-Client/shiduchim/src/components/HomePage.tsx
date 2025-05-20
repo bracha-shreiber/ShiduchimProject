@@ -76,7 +76,7 @@ const HomePage = () => {
   const navigate = useNavigate()
   // const [sign, setSign] = useState<boolean>(false)
   const [showUploader, setShowUploader] = useState<boolean>(false)
-  const [loaded, setLoaded] = useState<boolean>(false)
+  // const [loaded, setLoaded] = useState<boolean>(false)
 
   // Add effect to ensure images are properly loaded
   useEffect(() => {
@@ -94,11 +94,11 @@ const HomePage = () => {
         });
         
         await Promise.all(promises);
-        setLoaded(true);
+        // setLoaded(true);
       } catch (error) {
         console.error("Failed to load images:", error);
         // Fallback to show the UI even if images fail to load
-        setLoaded(true);
+        // setLoaded(true);
       }
     };
     

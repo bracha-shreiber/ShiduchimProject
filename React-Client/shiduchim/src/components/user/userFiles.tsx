@@ -276,7 +276,7 @@ const UserFiles: React.FC = () => {
   const files = useSelector((state: RootState) => state.files.files);
   const error = useSelector((state: RootState) => state.files.error);
 
-  const [expandedFileIds, setExpandedFileIds] = useState<number[]>([]);
+  // const [ setExpandedFileIds] = useState<number[]>([]);
   const [expandedDateGroups, setExpandedDateGroups] = useState<string[]>([]);
 
   useEffect(() => {
@@ -293,11 +293,11 @@ const UserFiles: React.FC = () => {
     console.log(`Viewing original file with ID: ${fileId}`);
   };
 
-  const toggleExpandFile = (fileId: number) => {
-    setExpandedFileIds((prev) =>
-      prev.includes(fileId) ? prev.filter((id) => id !== fileId) : [...prev, fileId]
-    );
-  };
+  // const toggleExpandFile = (fileId: number) => {
+  //   setExpandedFileIds((prev) =>
+  //     prev.includes(fileId) ? prev.filter((id) => id !== fileId) : [...prev, fileId]
+  //   );
+  // };
 
   const toggleExpandDateGroup = (date: string) => {
     setExpandedDateGroups((prev) =>
