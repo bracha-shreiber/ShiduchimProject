@@ -170,6 +170,8 @@ export const loginUser = createAsyncThunk('Auth/login', async (userData: UserLog
         const response = await axios.post<{ user: User, token: string }>(`${url}/Auth/login`, userData);
         const { user, token } = response.data;
         console.log("LOGIN RESPONSE:", response);
+        console.log("url:", url);
+        console.log("userData:", userData);
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('userId', user.id.toString());
         return user;
