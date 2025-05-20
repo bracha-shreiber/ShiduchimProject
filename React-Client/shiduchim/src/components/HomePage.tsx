@@ -81,7 +81,7 @@ const HomePage = () => {
   // Add effect to ensure images are properly loaded
   useEffect(() => {
     const preloadImages = async () => {
-      const imageUrls = ['././public/images/כוסות.jpg'];
+      const imageUrls = ['/images/כוסות.jpg'];
       
       try {
         const promises = imageUrls.map(url => {
