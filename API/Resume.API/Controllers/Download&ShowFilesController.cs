@@ -30,25 +30,32 @@ namespace Resume.API.Controllers
 
             try
             {
+                string decodedFileName = Uri.UnescapeDataString(fileName);
+
                 var request = new GetPreSignedUrlRequest
                 {
                     BucketName = "filesresume.testpnoren",
-                    Key = fileName,
+                    Key = decodedFileName,
                     Verb = HttpVerb.GET,
                     Expires = DateTime.UtcNow.AddMinutes(5)
                 };
+
                 string url = _s3Client.GetPreSignedURL(request);
+
                 return Ok(new { url });
             }
             catch (AmazonS3Exception ex)
             {
+                // ניתן להוסיף לוג כאן
                 return StatusCode(500, $"Error accessing S3: {ex.Message}");
             }
             catch (Exception ex)
             {
+                // ניתן להוסיף לוג כאן
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
         }
+
 
         [HttpGet("show-file-content")]
         public async Task<IActionResult> ShowFileContent([FromQuery] string fileName)
