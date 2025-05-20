@@ -14,10 +14,7 @@ namespace Resume.Data
         public virtual DbSet<Sharing> Sharings { get; set; }
         public virtual DbSet<Match> Matches { get; set; }
         public virtual DbSet<AIResponse> AIResponses { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=Shiduchim");
-        }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Match>()

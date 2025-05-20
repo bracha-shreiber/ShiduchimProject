@@ -77,7 +77,11 @@ builder.Services.AddScoped<IResumefileRepository, ResumeFileRepository>();
 builder.Services.AddScoped<IAIService,AIService>();
 builder.Services.AddScoped<IAIRepository, AIRepository>();
 
-builder.Services.AddDbContext<ResumeContext>();
+//builder.Services.AddDbContext<ResumeContext>();
+var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+builder.Services.AddDbContext<ResumeContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString), options => options.CommandTimeout(60)));
+
 builder.Services.AddAutoMapper(typeof(MappingProFile));
 
 // ✅ Add Amazon S3 with region fix
@@ -145,6 +149,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors("MyPolicy");
 app.UseAuthorization();
 app.MapControllers();
+
 
 
 
