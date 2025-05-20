@@ -81,7 +81,7 @@ builder.Services.AddScoped<IAIRepository, AIRepository>();
 var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 builder.Services.AddDbContext<ResumeContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString), options => options.CommandTimeout(60)));
-
+//Console.WriteLine(connectionString);
 builder.Services.AddAutoMapper(typeof(MappingProFile));
 
 // ✅ Add Amazon S3 with region fix
