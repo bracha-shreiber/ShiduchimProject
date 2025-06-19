@@ -76,5 +76,15 @@ namespace Resume.API.Controllers
             await _resumeFileService.DeleteResumeFile(id);
             return NoContent();
         }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery] int userId, [FromQuery] string field, [FromQuery] string value)
+        {
+            if (string.IsNullOrWhiteSpace(field) || string.IsNullOrWhiteSpace(value))
+                return BadRequest("Field and value are required.");
+
+            var result = await _resumeFileService.SearchFilesAsync(userId, field, value);
+            return Ok(result);
+        }
     }
 }

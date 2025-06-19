@@ -1,4 +1,5 @@
-﻿using Resume.Core.Models;
+﻿using DotNetEnv;
+using Resume.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace Resume.Core.IServices
         Task<ResumeFile> AddResumeFile(ResumeFile resumeFile);
         Task UpdateResumeFile(ResumeFile resumeFile);
         Task DeleteResumeFile(int id);
+        Task<IEnumerable<AIResponse>> SearchFilesAsync(int userId, string field, string value);
     }
 }

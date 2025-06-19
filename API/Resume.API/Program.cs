@@ -76,6 +76,8 @@ builder.Services.AddScoped<IResumeFileService, ResumeFileService>();
 builder.Services.AddScoped<IResumefileRepository, ResumeFileRepository>();
 builder.Services.AddScoped<IAIService,AIService>();
 builder.Services.AddScoped<IAIRepository, AIRepository>();
+builder.Services.AddScoped<ISharingService, SharingService>();
+builder.Services.AddScoped<ISharingRepository, SharingRepository>();
 
 //builder.Services.AddDbContext<ResumeContext>();
 var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
@@ -90,9 +92,9 @@ builder.Services.AddSingleton<IAmazonS3>(serviceProvider =>
     var config = builder.Configuration;
     var options = serviceProvider.GetRequiredService<IOptions<AWSOptions>>().Value;
 
-    var accessKey = config["AWS:AccessKey"];
-    var secretKey = config["AWS:SecretKey"];
-    var regionValue = config["AWS:Region"];
+    var accessKey = Environment.GetEnvironmentVariable("ACCESS_KEY_ID");
+    var secretKey = Environment.GetEnvironmentVariable("SECRET_ACCESS_KEY");
+    var regionValue = Environment.GetEnvironmentVariable("REGION");
 
     if (string.IsNullOrEmpty(accessKey) || string.IsNullOrEmpty(secretKey) || string.IsNullOrEmpty(regionValue))
     {

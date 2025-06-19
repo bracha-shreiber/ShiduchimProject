@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Resume.Data;
 
@@ -11,9 +12,11 @@ using Resume.Data;
 namespace Resume.Data.Migrations
 {
     [DbContext(typeof(ResumeContext))]
-    partial class ResumeContextModelSnapshot : ModelSnapshot
+    [Migration("20250524203137_withSharing")]
+    partial class withSharing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -247,7 +250,7 @@ namespace Resume.Data.Migrations
 
             modelBuilder.Entity("Resume.Core.Models.Sharing", b =>
                 {
-                    b.HasOne("AIResponse", "Resumefile")
+                    b.HasOne("Resume.Core.Models.ResumeFile", "Resumefile")
                         .WithMany()
                         .HasForeignKey("ResumefileID")
                         .OnDelete(DeleteBehavior.Cascade)

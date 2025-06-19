@@ -23,23 +23,23 @@
 //             <Box sx={{ display: 'flex', justifyContent: 'flex-start', left: '3%', position: 'fixed', top: 60 }}>
 //                 {!LoggedIn && (
 //                     <>
-//                         <Button variant="contained" onClick={() => { setSign(true); setMode('signIn') }} sx={{ backgroundColor: '#FF0000', color: '#FFFFFF' }}>Sign In</Button>
-//                         <Button variant="contained" onClick={() => { setSign(true); setMode('signUp') }} sx={{ backgroundColor: '#FF0000', color: '#FFFFFF', marginLeft: 1 }}>Sign Up</Button>
+//                         <Button variant="contained" onClick={() => { setSign(true); setMode('signIn') }} sx={{ backgroundColor: '#722F37', color: '#FFFFFF' }}>Sign In</Button>
+//                         <Button variant="contained" onClick={() => { setSign(true); setMode('signUp') }} sx={{ backgroundColor: '#722F37', color: '#FFFFFF', marginLeft: 1 }}>Sign Up</Button>
 //                     </>
 //                 )}
 //                 {LoggedIn && (
 //                     <Box>
-//                         <Button variant="contained" onClick={() => setUpdate(true)} sx={{ backgroundColor: '#FF0000', color: '#FFFFFF', marginLeft: 1 }}>Update</Button>
+//                         <Button variant="contained" onClick={() => setUpdate(true)} sx={{ backgroundColor: '#722F37', color: '#FFFFFF', marginLeft: 1 }}>Update</Button>
 //                         <Button variant="contained" onClick={() => {
 //                             navigate("/"); setLoggedIn(false); userDispatch({ type: "LOGOUT", data: {} as User });
-//                         }} sx={{ backgroundColor: '#FF0000', color: '#FFFFFF', marginLeft: 1 }}>Sign Out</Button>
+//                         }} sx={{ backgroundColor: '#722F37', color: '#FFFFFF', marginLeft: 1 }}>Sign Out</Button>
 //                     </Box>
 //                 )}
 //                {LoggedIn && 
 //                 <Button 
 //                     variant="contained" 
 //                     onClick={() => setShowUploader(true)} 
-//                     sx={{ backgroundColor: '#FF0000', color: '#FFFFFF', marginLeft: 1 }}
+//                     sx={{ backgroundColor: '#722F37', color: '#FFFFFF', marginLeft: 1 }}
 //                 >
 //                     Upload Resume File
 //                 </Button>
@@ -67,8 +67,10 @@ import { useContext, useState, useEffect } from "react"
 // import Register from "./user/register"
 import FileUploader from "./uploadFile"
 import Header from "./header"
+import Sidebar from "./sideBar"
 
 const HomePage = () => {
+  
   const { LoggedIn, setLoggedIn } = useContext(IsLoggedIn)
   // const [mode, setMode] = useState<"signIn" | "signUp">("signIn")
   const [update, setUpdate] = useState<boolean>(false)
@@ -81,7 +83,7 @@ const HomePage = () => {
   // Add effect to ensure images are properly loaded
   useEffect(() => {
     const preloadImages = async () => {
-      const imageUrls = ['/images/כוסות.jpg'];
+      const imageUrls = ['/images/cups2.png'];
       
       try {
         const promises = imageUrls.map(url => {
@@ -106,7 +108,14 @@ const HomePage = () => {
   }, []);
 
   return (
-   <><Header /><Box
+    <Box sx={{ display: "flex", flexDirection: "row", minHeight: "100vh", width: "100vw" }}>
+  {LoggedIn && <Sidebar />}
+  <Box sx={{ flexGrow: 1 }}>
+    {/* כאן ייכנס כל התוכן של העמוד שלך (כל מה שכתבת עד עכשיו) */}
+  
+   <>
+   {!LoggedIn && <Header />}
+   <Box
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -114,11 +123,12 @@ const HomePage = () => {
         padding: 0,
         margin: 0,
         minHeight: "100vh",
-        width: "100vw",
+        width: !LoggedIn ? "100vw" : "calc(100vw - 280px)",
         backgroundColor: "#f5f5f5",
         overflow: "hidden",
-        backgroundImage: "url('/images/כוסות.jpg')",
+        backgroundImage: "url('/images/cups2.png')",
         backgroundSize: "cover",
+        // backgroundSize: LoggedIn ? "contain" : "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",
         position: "relative",
@@ -163,7 +173,7 @@ const HomePage = () => {
                 setMode("signIn")
               } }
               sx={{
-                backgroundColor: "#FF0000",
+                backgroundColor: "#722F37",
                 color: "#FFFFFF",
                 borderRadius: 2,
                 textTransform: "none",
@@ -186,7 +196,7 @@ const HomePage = () => {
                 setMode("signUp")
               } }
               sx={{
-                backgroundColor: "#FF0000",
+                backgroundColor: "#722F37",
                 color: "#FFFFFF",
                 marginLeft: 1,
                 borderRadius: 2,
@@ -207,11 +217,11 @@ const HomePage = () => {
         {/* )} */}
         {LoggedIn && (
           <Box sx={{ display: "flex", gap: 2 }}>
-            <Button
+            {/* <Button
               variant="contained"
               onClick={() => setUpdate(true)}
               sx={{
-                backgroundColor: "#FF0000",
+                backgroundColor: "#722F37",
                 color: "#FFFFFF",
                 borderRadius: 2,
                 textTransform: "none",
@@ -236,7 +246,7 @@ const HomePage = () => {
                 userDispatch({ type: "LOGOUT", data: {} as User })
               } }
               sx={{
-                backgroundColor: "#FF0000",
+                backgroundColor: "#722F37",
                 color: "#FFFFFF",
                 borderRadius: 2,
                 textTransform: "none",
@@ -256,7 +266,7 @@ const HomePage = () => {
               variant="contained"
               onClick={() => setShowUploader(true)}
               sx={{
-                backgroundColor: "#FF0000",
+                backgroundColor: "#722F37",
                 color: "#FFFFFF",
                 borderRadius: 2,
                 textTransform: "none",
@@ -271,7 +281,7 @@ const HomePage = () => {
               }}
             >
               Upload Resume
-            </Button>
+            </Button> */}
           </Box>
         )}
         {showUploader && (
@@ -371,7 +381,7 @@ const HomePage = () => {
               gutterBottom
               sx={{
                 fontWeight: 900,
-                color: "#FF0000",
+                color: "#722F37",
                 textShadow: "2px 2px 4px rgba(0,0,0,0.1)",
                 fontSize: { xs: "2.5rem", sm: "3rem", md: "3.5rem" },
                 textAlign: "center",
@@ -422,7 +432,7 @@ const HomePage = () => {
                     navigate("/signin"); 
                   } }
                   sx={{
-                    backgroundColor: "#FF0000",
+                    backgroundColor: "#722F37",
                     color: "#FFFFFF",
                     borderRadius: 2,
                     textTransform: "none",
@@ -479,7 +489,7 @@ const HomePage = () => {
               display: "block",
               width: "60px",
               height: "4px",
-              backgroundColor: "#FF0000",
+              backgroundColor: "#722F37",
               margin: "16px auto",
               borderRadius: "2px",
             }
@@ -517,12 +527,12 @@ const HomePage = () => {
                 left: 0,
                 width: "5px",
                 height: "100%",
-                backgroundColor: "#FF0000",
+                backgroundColor: "#722F37",
               }
             }}
           >
             <Typography variant="h5" component="h3" gutterBottom sx={{
-              color: "#FF0000",
+              color: "#722F37",
               fontWeight: 700,
               mb: 2,
               display: "flex",
@@ -531,7 +541,7 @@ const HomePage = () => {
                 content: '"01"',
                 fontSize: "0.9rem",
                 fontWeight: 900,
-                backgroundColor: "#FF0000",
+                backgroundColor: "#722F37",
                 color: "white",
                 borderRadius: "50%",
                 width: "28px",
@@ -571,12 +581,12 @@ const HomePage = () => {
                 left: 0,
                 width: "5px",
                 height: "100%",
-                backgroundColor: "#FF0000",
+                backgroundColor: "#722F37",
               }
             }}
           >
             <Typography variant="h5" component="h3" gutterBottom sx={{
-              color: "#FF0000",
+              color: "#722F37",
               fontWeight: 700,
               mb: 2,
               display: "flex",
@@ -585,7 +595,7 @@ const HomePage = () => {
                 content: '"02"',
                 fontSize: "0.9rem",
                 fontWeight: 900,
-                backgroundColor: "#FF0000",
+                backgroundColor: "#722F37",
                 color: "white",
                 borderRadius: "50%",
                 width: "28px",
@@ -625,12 +635,12 @@ const HomePage = () => {
                 left: 0,
                 width: "5px",
                 height: "100%",
-                backgroundColor: "#FF0000",
+                backgroundColor: "#722F37",
               }
             }}
           >
             <Typography variant="h5" component="h3" gutterBottom sx={{
-              color: "#FF0000",
+              color: "#722F37",
               fontWeight: 700,
               mb: 2,
               display: "flex",
@@ -639,7 +649,7 @@ const HomePage = () => {
                 content: '"03"',
                 fontSize: "0.9rem",
                 fontWeight: 900,
-                backgroundColor: "#FF0000",
+                backgroundColor: "#722F37",
                 color: "white",
                 borderRadius: "50%",
                 width: "28px",
@@ -690,7 +700,7 @@ const HomePage = () => {
               display: "block",
               width: "60px",
               height: "4px",
-              backgroundColor: "#FF0000",
+              backgroundColor: "#722F37",
               margin: "16px auto",
               borderRadius: "2px",
             }
@@ -742,7 +752,7 @@ const HomePage = () => {
                   width: 50,
                   height: 50,
                   borderRadius: "50%",
-                  backgroundColor: "#FF0000",
+                  backgroundColor: "#722F37",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -799,7 +809,7 @@ const HomePage = () => {
                   width: 50,
                   height: 50,
                   borderRadius: "50%",
-                  backgroundColor: "#FF0000",
+                  backgroundColor: "#722F37",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -836,7 +846,7 @@ const HomePage = () => {
       >
         <Box
           sx={{
-            backgroundImage: "linear-gradient(135deg, #ff0000 0%, #cc0000 100%)",
+            backgroundImage: "linear-gradient(135deg, #722F37 0%, #cc0000 100%)",
             padding: { xs: 4, md: 8 },
             borderRadius: { xs: 0, md: 4 },
             textAlign: "center",
@@ -872,7 +882,7 @@ const HomePage = () => {
               } }
               sx={{
                 backgroundColor: "white",
-                color: "#FF0000",
+                color: "#722F37",
                 borderRadius: 2,
                 textTransform: "none",
                 fontWeight: "bold",
@@ -915,7 +925,10 @@ const HomePage = () => {
       {/* {sign && mode === "signIn" && <Login></Login>} */}
       {/* {sign && mode === "signUp" && <Register setClose={setSign}></Register>} */}
       {update && <UpdateUser update={update} closeForm={() => setUpdate(false)} />}
+        {/* {LoggedIn && <Sidebar />} */}
     </Box></>
+    </Box>
+</Box>
   )
 }
 

@@ -14,7 +14,7 @@ export default () => {
                         backgroundColor: 'transparent',
                         transition: 'color 0.3s',
                         '&:hover': {
-                            color: '#FF0000' // Red on hover
+                            color: '#722F37' // Red on hover
                         }
                     }}
                 >
@@ -29,7 +29,7 @@ export default () => {
                         backgroundColor: 'transparent',
                         transition: 'color 0.3s',
                         '&:hover': {
-                            color: '#FF0000' // Red on hover
+                            color: '#722F37' // Red on hover
                         }
                     }}
                 >
@@ -44,7 +44,7 @@ export default () => {
                         backgroundColor: 'transparent',
                         transition: 'color 0.3s',
                         '&:hover': {
-                            color: '#FF0000' // Red on hover
+                            color: '#722F37' // Red on hover
                         }
                     }}
                 >

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Resume.Core.IRepository;
 using Resume.Core.IServices;
 using Resume.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +16,7 @@ namespace Resume.Service.Services
     {
         private readonly IResumefileRepository _resumeFileRepository;
         private readonly IMapper _mapper;
-        public ResumeFileService(IResumefileRepository resumefileRepository,IMapper mapper)
+        public ResumeFileService(IResumefileRepository resumefileRepository, IMapper mapper)
         {
             _resumeFileRepository = resumefileRepository;
             _mapper = mapper;
@@ -29,7 +31,7 @@ namespace Resume.Service.Services
         }
         public async Task<ResumeFile> AddResumeFile(ResumeFile resumeFile)
         {
-           await _resumeFileRepository.AddResumeFile(resumeFile);
+            await _resumeFileRepository.AddResumeFile(resumeFile);
             return resumeFile;
         }
 
@@ -42,5 +44,13 @@ namespace Resume.Service.Services
         {
             await _resumeFileRepository.UpdateResumeFile(resumeFile);
         }
+
+
+        public async Task<IEnumerable<AIResponse>> SearchFilesAsync(int userId, string field, string value)
+        {
+
+            return await _resumeFileRepository.SearchFilesAsync(userId, field, value);
+        }
+
     }
 }

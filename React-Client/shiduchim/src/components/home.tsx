@@ -21,16 +21,16 @@
 //             <Box sx={{ display: 'flex', justifyContent: 'flex-start', left: '3%', position: 'fixed', top: 60 }}>
 //                 {!LoggedIn && (
 //                     <>
-//                         <Button variant="contained" onClick={() => { setSign(true); setMode('signIn') }} sx={{ backgroundColor: '#FF0000', color: '#FFFFFF' }}>Sign In</Button>
-//                         <Button variant="contained" onClick={() => { setSign(true); setMode('signUp') }} sx={{ backgroundColor: '#FF0000', color: '#FFFFFF', marginLeft: 1 }}>Sign Up</Button>
+//                         <Button variant="contained" onClick={() => { setSign(true); setMode('signIn') }} sx={{ backgroundColor: '#722F37', color: '#FFFFFF' }}>Sign In</Button>
+//                         <Button variant="contained" onClick={() => { setSign(true); setMode('signUp') }} sx={{ backgroundColor: '#722F37', color: '#FFFFFF', marginLeft: 1 }}>Sign Up</Button>
 //                     </>
 //                 )}
 //                 {LoggedIn && (
 //                     <Box>
-//                         <Button variant="contained" onClick={() => setUpdate(true)} sx={{ backgroundColor: '#FF0000', color: '#FFFFFF', marginLeft: 1 }}>Update</Button>
+//                         <Button variant="contained" onClick={() => setUpdate(true)} sx={{ backgroundColor: '#722F37', color: '#FFFFFF', marginLeft: 1 }}>Update</Button>
 //                         <Button variant="contained" onClick={() => {
 //                             navigate("/"); setLoggedIn(false); userDispatch({ type: "LOGOUT", data: {} as User });
-//                         }} sx={{ backgroundColor: '#FF0000', color: '#FFFFFF', marginLeft: 1 }}>Sign Out</Button>
+//                         }} sx={{ backgroundColor: '#722F37', color: '#FFFFFF', marginLeft: 1 }}>Sign Out</Button>
 //                     </Box>
 //                 )}
 //             </Box>

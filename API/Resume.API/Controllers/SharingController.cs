@@ -1,0 +1,40 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Resume.Core.DTOs;
+using Resume.Core.IServices;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+namespace Resume.API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class SharingController : ControllerBase
+    {
+        private readonly ISharingService _sharingService;
+
+        public SharingController(ISharingService sharingService)
+        {
+            _sharingService = sharingService;
+        }
+
+        [HttpPost("share")]
+        public async Task<IActionResult> ShareFile([FromBody] SharingDTO request)
+        {
+            var result = await _sharingService.ShareFileAsync(request.ResumeFileId, request.TargetEmail);
+
+            if (result == "Resume file not found." || result == "Target user not found.")
+                return NotFound(result);
+
+            if (result == "File already shared with this user.")
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+        [HttpGet("all-sharings")]
+        public async Task<IActionResult> GetAllSharings()
+        {
+            var sharings = await _sharingService.GetAllSharingsAsync();
+            return Ok(sharings);
+        }
+    }
+}

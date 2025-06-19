@@ -288,11 +288,13 @@ const FileUploader = () => {
         console.log(`${key}:`, value)
       }
 
-      const response = await axios.post("http://localhost:5076/api/AIResponse", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
+      const response = await axios.post("http://localhost:5076/api/AIResponse", formData);
+      //   , {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //     // 'Content-Disposition': 'inline', 
+      //   },
+      // })
 
       console.log("Response from DB save:", response.data)
     } catch (error) {
@@ -325,7 +327,7 @@ const FileUploader = () => {
       })
 
       alert("הקובץ הועלה בהצלחה!")
-      saveindb(presignedUrl) // שלח את ה-URL של הקובץ ששודר ל-S3
+      saveindb(file) // שלח את ה-URL של הקובץ ששודר ל-S3
     } catch (error) {
       console.error("שגיאה בהעלאה:", error)
     }
@@ -349,8 +351,8 @@ const FileUploader = () => {
           component="label"
           fullWidth
           sx={{
-            borderColor: "#FF0000",
-            color: "#FF0000",
+            borderColor: "#722F37",
+            color: "#722F37",
             borderRadius: 2,
             padding: "10px 0",
             "&:hover": {
@@ -371,7 +373,7 @@ const FileUploader = () => {
         fullWidth
         disabled={!file}
         sx={{
-          backgroundColor: "#FF0000",
+          backgroundColor: "#722F37",
           color: "white",
           borderRadius: 2,
           padding: "10px 0",
@@ -401,7 +403,7 @@ const FileUploader = () => {
                   borderRadius: 5,
                   backgroundColor: "#ffcccc",
                   "& .MuiLinearProgress-bar": {
-                    backgroundColor: "#FF0000",
+                    backgroundColor: "#722F37",
                   },
                 }}
               />

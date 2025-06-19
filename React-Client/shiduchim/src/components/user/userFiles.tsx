@@ -139,7 +139,7 @@
 //     borderRadius: '8px',
 //     padding: '1rem',
 //     marginBottom: '2rem',
-//     borderLeft: '4px solid #FF0000',
+//     borderLeft: '4px solid #722F37',
 //   },
 //   errorText: {
 //     color: '#d32f2f',
@@ -250,7 +250,7 @@
 //   },
 //   downloadButton: {
 //     padding: '0.6rem 1.2rem',
-//     backgroundColor: '#FF0000',
+//     backgroundColor: '#722F37',
 //     color: 'white',
 //     border: 'none',
 //     borderRadius: '4px',
@@ -265,9 +265,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
-import { fetchFilesByUserId, downloadFile } from '../../store/filesStore';
+import { fetchFilesByUserId, downloadFile, showFile } from '../../store/filesStore';
 import { FileData } from '../../types/fileData';
 import Header from '../header';
+import SearchComponent from '../files/search';
+import ShareIcon from '@mui/icons-material/Share';
+import SharingComponent from '../files/shareFiles';
 
 const UserFiles: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -275,6 +278,8 @@ const UserFiles: React.FC = () => {
 
   const files = useSelector((state: RootState) => state.files.files);
   const error = useSelector((state: RootState) => state.files.error);
+  const [share,setShare] = useState<boolean>(false);
+  const [shareFileId, setShareFileId] = useState<number | null>(null);
 
   // const [ setExpandedFileIds] = useState<number[]>([]);
   const [expandedDateGroups, setExpandedDateGroups] = useState<string[]>([]);
@@ -289,9 +294,48 @@ const UserFiles: React.FC = () => {
     dispatch(downloadFile(fileName));
   };
 
-  const handleViewOriginal = (fileId: number) => {
-    console.log(`Viewing original file with ID: ${fileId}`);
+  // const handleViewOriginal = async (fileName: string) => {
+  //   try {
+  //     const resultAction = await dispatch(showFile(fileName) as any);
+  //     console.log("resultAction", resultAction);
+
+  //     const fileUrl = resultAction.payload;
+  //     console.log("fileUrl", fileUrl);
+
+
+  //     if (fileUrl) {
+  //       const extension = fileName.split('.').pop()?.toLowerCase();
+  //       if (extension === "pdf") {
+
+  //       }
+
+  //       // <img src={fileUrl} alt="Original" style={{ maxWidth: "100%"}} />
+  //       <iframe src={fileUrl} width="100%" height="600px"></iframe>
+  //       console.log(`Viewing original file: ${fileName}`);
+  //     } else {
+  //       console.error("Failed to get file URL.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error viewing file:", error);
+  //   }
+  // };
+  const [viewingFileUrl, setViewingFileUrl] = useState<string | null>(null);
+
+  const handleViewOriginal = async (fileName: string) => {
+    try {
+      const resultAction = await dispatch(showFile(fileName) as any);
+      const fileUrl = resultAction.payload;
+
+      if (fileUrl) {
+        setViewingFileUrl(fileUrl);
+      } else {
+        console.error("Failed to get file URL.");
+      }
+    } catch (error) {
+      console.error("Error viewing file:", error);
+    }
   };
+
 
   // const toggleExpandFile = (fileId: number) => {
   //   setExpandedFileIds((prev) =>
@@ -307,7 +351,12 @@ const UserFiles: React.FC = () => {
 
   // Group files by createdAt date (formatted to 'YYYY-MM-DD')
   const groupedFiles: Record<string, FileData[]> = files.reduce((acc, file) => {
-    const date = new Date(file.createdAt).toISOString().split('T')[0]; // YYYY-MM-DD
+    // const date = new Date(file.createdAt).toISOString().split('T')[0]; // YYYY-MM-DD
+    const dateObj = new Date(file.createdAt);
+    const date = dateObj.getFullYear() + '-' +
+      String(dateObj.getMonth() + 1).padStart(2, '0') + '-' +
+      String(dateObj.getDate()).padStart(2, '0');
+
     if (!acc[date]) acc[date] = [];
     acc[date].push(file);
     return acc;
@@ -328,6 +377,7 @@ const UserFiles: React.FC = () => {
             <p style={styles.errorText}>שגיאה: {error}</p>
           </div>
         )}
+        <SearchComponent />
 
         {files.length === 0 ? (
           <div style={styles.emptyState}>
@@ -377,29 +427,31 @@ const UserFiles: React.FC = () => {
                             </button> */}
                           </div>
 
-                         
-                              <div style={styles.fileDetails}>
-                                <div style={styles.detailItem}><span style={styles.detailLabel}>שם פרטי:</span><span style={styles.detailValue}>{file.firstName}</span></div>
-                                <div style={styles.detailItem}><span style={styles.detailLabel}>שם משפחה:</span><span style={styles.detailValue}>{file.lastName}</span></div>
-                                <div style={styles.detailItem}><span style={styles.detailLabel}>שם האב:</span><span style={styles.detailValue}>{file.fatherName}</span></div>
-                                <div style={styles.detailItem}><span style={styles.detailLabel}>שם האם:</span><span style={styles.detailValue}>{file.motherName}</span></div>
-                                <div style={styles.detailItem}><span style={styles.detailLabel}>כתובת:</span><span style={styles.detailValue}>{file.address}</span></div>
-                                <div style={styles.detailItem}><span style={styles.detailLabel}>גיל:</span><span style={styles.detailValue}>{file.age}</span></div>
-                                <div style={styles.detailItem}><span style={styles.detailLabel}>גובה:</span><span style={styles.detailValue}>{file.height}</span></div>
-                                <div style={styles.detailItem}><span style={styles.detailLabel}>עיסוק:</span><span style={styles.detailValue}>{file.occupation}</span></div>
-                                <div style={styles.detailItem}><span style={styles.detailLabel}>מקום לימודים:</span><span style={styles.detailValue}>{file.placeOfStudy}</span></div>
-                              </div>
 
-                              <div style={styles.fileActions}>
-                                <button onClick={() => handleViewOriginal(file.id)} title="צפה בקובץ">
-                                  <img src="/images/icons8-eye.gif" alt="צפה" />
-                                </button>
-                                <button onClick={() => handleDownload(file.fileName)} title="הורד קובץ">
-                                  <img src="/images/icons8-download-32.png" alt="הורד" />
-                                </button>
-                              </div>
-                          
-                          
+                          <div style={styles.fileDetails}>
+                            <div style={styles.detailItem}><span style={styles.detailLabel}>שם פרטי:</span><span style={styles.detailValue}>{file.firstName}</span></div>
+                            <div style={styles.detailItem}><span style={styles.detailLabel}>שם משפחה:</span><span style={styles.detailValue}>{file.lastName}</span></div>
+                            <div style={styles.detailItem}><span style={styles.detailLabel}>שם האב:</span><span style={styles.detailValue}>{file.fatherName}</span></div>
+                            <div style={styles.detailItem}><span style={styles.detailLabel}>שם האם:</span><span style={styles.detailValue}>{file.motherName}</span></div>
+                            <div style={styles.detailItem}><span style={styles.detailLabel}>כתובת:</span><span style={styles.detailValue}>{file.address}</span></div>
+                            <div style={styles.detailItem}><span style={styles.detailLabel}>גיל:</span><span style={styles.detailValue}>{file.age}</span></div>
+                            <div style={styles.detailItem}><span style={styles.detailLabel}>גובה:</span><span style={styles.detailValue}>{file.height}</span></div>
+                            <div style={styles.detailItem}><span style={styles.detailLabel}>עיסוק:</span><span style={styles.detailValue}>{file.occupation}</span></div>
+                            <div style={styles.detailItem}><span style={styles.detailLabel}>מקום לימודים:</span><span style={styles.detailValue}>{file.placeOfStudy}</span></div>
+                          </div>
+
+                          <div style={styles.fileActions}>
+                            <button onClick={() => handleViewOriginal(file.fileName)} title="צפה בקובץ">
+                              <img src="/images/icons8-eye.gif" alt="צפה" />
+                            </button>
+                            <button onClick={() => handleDownload(file.fileName)} title="הורד קובץ">
+                              <img src="/images/icons8-download-32.png" alt="הורד" />
+                            </button>
+                            <button onClick={()=>{setShareFileId(file.id);setShare(true)}}>
+                              <ShareIcon style={{ verticalAlign: 'middle', marginLeft: 4 }} />
+                              שתף
+                            </button>
+                          </div>
                         </div>
                       );
                     })}
@@ -410,6 +462,24 @@ const UserFiles: React.FC = () => {
           })
         )}
       </div>
+      {viewingFileUrl && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
+          backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', justifyContent: 'center', alignItems: 'center',
+          zIndex: 1000,
+        }}>
+          <div style={{ position: 'relative', width: '80%', height: '80%', backgroundColor: 'white', borderRadius: 8 }}>
+            <button
+              onClick={() => setViewingFileUrl(null)}
+              style={{ position: 'absolute', top: 10, right: 10, cursor: 'pointer' }}
+            >
+              סגור ✖
+            </button>
+            <iframe src={viewingFileUrl} width="100%" height="100%" title="File preview" />
+          </div>
+        </div>
+      )}
+      {share && shareFileId !== null && <SharingComponent resumeFileId={shareFileId} />}
     </>
   );
 };
@@ -448,7 +518,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderRadius: '8px',
     padding: '1rem',
     marginBottom: '2rem',
-    borderLeft: '4px solid #FF0000',
+    borderLeft: '4px solid #722F37',
   },
   errorText: {
     color: '#d32f2f',
@@ -559,7 +629,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   downloadButton: {
     padding: '0.6rem 1.2rem',
-    backgroundColor: '#FF0000',
+    backgroundColor: '#722F37',
     color: 'white',
     border: 'none',
     borderRadius: '4px',

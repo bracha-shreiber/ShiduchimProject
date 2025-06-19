@@ -8,9 +8,7 @@ namespace Resume.Core.DTOs
 {
     public class SharingDTO
     {
-        public int ShareID { get; set; }
-        public int ResumefileID { get; set; }
-        public int SharedWithUserID { get; set; }
-        public DateTime SharedAt { get; set; }
+            public int ResumeFileId { get; set; }
+            public string TargetEmail { get; set; }
     }
 }

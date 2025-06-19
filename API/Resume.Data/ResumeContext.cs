@@ -14,7 +14,7 @@ namespace Resume.Data
         public virtual DbSet<Sharing> Sharings { get; set; }
         public virtual DbSet<Match> Matches { get; set; }
         public virtual DbSet<AIResponse> AIResponses { get; set; }
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Match>()
@@ -43,7 +43,25 @@ namespace Resume.Data
                 .WithMany(u => u.Files) // User יכול להיות בעל מספר AIResponses
                 .HasForeignKey(a => a.UserId) // הקשר מבוצע לפי ה-UserId
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Sharing>()
+              .HasKey(s => s.ShareID);
+
+            modelBuilder.Entity<Sharing>()
+                .HasOne(s => s.Resumefile)
+                .WithMany() // אם אתה לא מגדיר רשימת Sharings בתוך ResumeFile
+                .HasForeignKey(s => s.ResumefileID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Sharing>()
+                .HasOne(s => s.SharedWithUser)
+                .WithMany() // אם אתה לא מגדיר רשימת SharedFiles בתוך User
+                .HasForeignKey(s => s.SharedWithUserID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
         }
+
 
     }
 }

@@ -12,7 +12,7 @@ export default () => {
     return (
         <Avatar
             sx={{
-                bgcolor: "red",
+                bgcolor: "#722F37",
                 position: 'fixed',
                 // top: 60,
                 left: 250

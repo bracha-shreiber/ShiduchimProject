@@ -9,5 +9,8 @@ namespace Resume.Core.IRepository
         Task<ResumeFile> AddResumeFile(ResumeFile entity);
         Task UpdateResumeFile(ResumeFile entity);
         Task DeleteResumeFile(int id);
+
+        Task<IEnumerable<AIResponse>> SearchFilesAsync(int userId, string field, string value);
+
     }
 }

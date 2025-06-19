@@ -37,7 +37,17 @@ namespace Resume.API.Controllers
                     BucketName = "filesresume.testpnoren",
                     Key = decodedFileName,
                     Verb = HttpVerb.GET,
-                    Expires = DateTime.UtcNow.AddMinutes(5)
+                    Expires = DateTime.UtcNow.AddMinutes(5),
+
+                    //ResponseHeaderOverrides = new ResponseHeaderOverrides
+                    //{
+                    //    ContentDisposition = "inline"
+                    //}
+                    ResponseHeaderOverrides = new ResponseHeaderOverrides
+                    {
+                        ContentDisposition = "attachment"
+                    }
+
                 };
 
                 string url = _s3Client.GetPreSignedURL(request);
@@ -58,43 +68,66 @@ namespace Resume.API.Controllers
 
 
         [HttpGet("show-file-content")]
-        public async Task<IActionResult> ShowFileContent([FromQuery] string fileName)
+        public async Task<IActionResult> GetShowUrl([FromQuery] string fileName)
         {
             if (string.IsNullOrEmpty(fileName))
             {
                 return BadRequest("File name is required.");
             }
 
-            // Get the pre-signed URL
-            var urlResponse = await GetDownloadUrl(fileName);
-            if (urlResponse is BadRequestObjectResult)
-            {
-                return urlResponse;
-            }
-
-            var url = ((OkObjectResult)urlResponse).Value as dynamic;
-
             try
             {
-                var response = await _httpClient.GetAsync(url.url);
-                if (response.IsSuccessStatusCode)
+                string decodedFileName = Uri.UnescapeDataString(fileName);
+
+                var request = new GetPreSignedUrlRequest
                 {
-                    var fileBytes = await response.Content.ReadAsByteArrayAsync();
+                    BucketName = "filesresume.testpnoren",
+                    Key = decodedFileName,
+                    Verb = HttpVerb.GET,
+                    Expires = DateTime.UtcNow.AddMinutes(5),
 
-                    var contentType = response.Content.Headers.ContentType?.ToString() ?? "application/octet-stream";
-                    var fileDownloadName = Path.GetFileName(fileName);
+                    ResponseHeaderOverrides = new ResponseHeaderOverrides
+                    {
+                        ContentDisposition = "inline"
+                    }
+                    //ResponseHeaderOverrides = new ResponseHeaderOverrides
+                    //{
+                    //    ContentDisposition = "attachment"
+                    //}
 
-                    return File(fileBytes, contentType, fileDownloadName);
-                }
+                };
 
-                return StatusCode((int)response.StatusCode, "Error fetching file content.");
+                string url = _s3Client.GetPreSignedURL(request);
+
+                return Ok(new { url });
+            }
+            catch (AmazonS3Exception ex)
+            {
+                // ניתן להוסיף לוג כאן
+                return StatusCode(500, $"Error accessing S3: {ex.Message}");
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred while fetching the file content: {ex.Message}");
+                // ניתן להוסיף לוג כאן
+                return StatusCode(500, $"An error occurred: {ex.Message}");
             }
         }
+        //public async Task<string> GetShowUrlAsync(string fileName)
+        //{
+        //    var request = new GetPreSignedUrlRequest
+        //    {
+        //        BucketName = "filesresume.testpnoren",
+        //        Key = fileName,
+        //        Verb = HttpVerb.GET,
+        //        Expires = DateTime.UtcNow.AddDays(300),
+        //        ResponseHeaderOverrides = new ResponseHeaderOverrides
+        //        {
+        //            ContentDisposition = "inline"
+        //        }
+        //    };
 
+        //    return _s3Client.GetPreSignedURL(request);
+        //}
 
     }
 }

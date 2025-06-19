@@ -125,7 +125,8 @@ namespace Resume.Service.Services
 
         private string ExtractTextFromPdf(IFormFile pdfStream)
         {
-            using (PdfReader reader = new PdfReader((Stream)pdfStream))
+            using (var stream = pdfStream.OpenReadStream())
+            using (PdfReader reader = new PdfReader(stream))
             using (PdfDocument pdfDoc = new PdfDocument(reader))
             {
                 StringWriter stringWriter = new StringWriter();
@@ -139,6 +140,7 @@ namespace Resume.Service.Services
                 return stringWriter.ToString();
             }
         }
+
 
         private string ExtractTextFromDocx(IFormFile resumeFile)
         {
