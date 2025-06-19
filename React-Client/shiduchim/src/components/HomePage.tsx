@@ -440,7 +440,7 @@ const HomePage = () => {
                     padding: "14px 36px",
                     fontSize: "1.1rem",
                     "&:hover": {
-                      backgroundColor: "#cc0000",
+                      backgroundColor: "rgba(85, 30, 30, 0.76)",
                       transform: "translateY(-3px)",
                       boxShadow: "0 6px 15px rgba(255, 0, 0, 0.4)",
                     },

@@ -400,7 +400,7 @@ const UserFiles: React.FC = () => {
                     fontWeight: 'bold',
                     fontSize: '1.1rem',
                     marginBottom: '0.5rem',
-                    marginTop: '2rem',
+                    // marginTop: '2rem',
                     borderBottom: '1px solid #ddd',
                     paddingBottom: '0.5rem',
                   }}
@@ -475,7 +475,7 @@ const UserFiles: React.FC = () => {
           <div style={{ position: 'relative', width: '80%', height: '80%', backgroundColor: 'white', borderRadius: 8 }}>
             <button
               onClick={() => setViewingFileUrl(null)}
-              style={{ position: 'absolute', top: 10, right: 10, cursor: 'pointer' }}
+              style={{ position: 'absolute', top: 1, right: 10, cursor: 'pointer' }}
             >
               סגור ✖
             </button>
@@ -493,12 +493,12 @@ const styles: { [key: string]: React.CSSProperties } = {
   container: {
     padding: '2rem',
     maxWidth: '100vw',
-    marginTop: '5rem',
+    marginTop: '1rem',
     fontFamily: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
     direction: 'rtl',
   },
   header: {
-    marginTop: '6rem',
+    marginTop: '2rem',
     marginBottom: '1rem',
     textAlign: 'right',
     marginLeft: '65vw',

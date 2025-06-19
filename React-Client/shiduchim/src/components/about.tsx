@@ -30,7 +30,7 @@ const styles = {
   container: {
     maxWidth: '80%',
     margin: 'auto',
-    padding: '10rem',
+    padding: '1rem',
     direction: 'rtl',
     textAlign: 'center',
     backgroundColor: '#f9f9f9',

@@ -249,12 +249,41 @@
 // };
 
 // export default FileUploader;
+// "use client"
+
+// import type React from "react"
+// import { useContext, useState } from "react"
+// import axios from "axios"
+// import { Alert, Box, Button, CircularProgress, Fade, LinearProgress, Paper, Typography } from "@mui/material"
+// import Header from "./header"
+// import Sidebar from "./sideBar"
+// import { IsLoggedIn } from "../App"
+// import { CheckCircleIcon, CloudUploadIcon } from "lucide-react"
+
+// const FileUploader = () => {
+//   const [file, setFile] = useState<File | null>(null)
+//   const [progress, setProgress] = useState(0)
+//    const { LoggedIn } = useContext(IsLoggedIn)
 "use client"
 
 import type React from "react"
 import { useContext, useState } from "react"
 import axios from "axios"
-import { Box, Button, LinearProgress, Typography } from "@mui/material"
+import { 
+  Box, 
+  Button, 
+  LinearProgress, 
+  Typography, 
+  Paper,
+  Alert,
+  Fade,
+  CircularProgress
+} from "@mui/material"
+import { 
+  CloudUpload as CloudUploadIcon,
+  CheckCircle as CheckCircleIcon,
+  // Error as ErrorIcon 
+} from "@mui/icons-material"
 import Header from "./header"
 import Sidebar from "./sideBar"
 import { IsLoggedIn } from "../App"
@@ -262,7 +291,10 @@ import { IsLoggedIn } from "../App"
 const FileUploader = () => {
   const [file, setFile] = useState<File | null>(null)
   const [progress, setProgress] = useState(0)
-   const { LoggedIn } = useContext(IsLoggedIn)
+  const [uploading] = useState(false)
+  const [uploadStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [errorMessage] = useState('')
+  const { LoggedIn } = useContext(IsLoggedIn)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     debugger
@@ -337,95 +369,386 @@ const FileUploader = () => {
     }
   }
 
-  return (
-    <>
-    {!LoggedIn && <Header/>}
-    {LoggedIn && <Sidebar/>}
-    <Box
-      sx={{
-        padding: 3,
-        borderRadius: 2,
-        backgroundColor: "white",
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-        width: "100%",
-        maxWidth: 400,
-        margin: "20px 0",
-      }}
-    >
-      <Box sx={{ mb: 2 }}>
-        <Button
-          variant="outlined"
-          component="label"
-          fullWidth
-          sx={{
-            borderColor: "#722F37",
-            color: "#722F37",
-            borderRadius: 2,
-            padding: "10px 0",
-            "&:hover": {
-              borderColor: "#cc0000",
-              backgroundColor: "rgba(255, 0, 0, 0.04)",
-            },
-          }}
-        >
-          Select File
-          <input type="file" onChange={handleFileChange} hidden />
-        </Button>
-        {file && <Box sx={{ mt: 1, fontSize: "0.875rem", color: "text.secondary" }}>Selected: {file.name}</Box>}
-      </Box>
+//   return (
+//     <>
+//     {!LoggedIn && <Header/>}
+//     {LoggedIn && <Sidebar/>}
+//     <Box
+//       sx={{
+//         padding: 3,
+//         borderRadius: 2,
+//         backgroundColor: "white",
+//         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+//         width: "100%",
+//         maxWidth: 400,
+//         margin: "20px 0",
+//       }}
+//     >
+//       <Box sx={{ mb: 2 }}>
+//         <Button
+//           variant="outlined"
+//           component="label"
+//           fullWidth
+//           sx={{
+//             borderColor: "#722F37",
+//             color: "#722F37",
+//             borderRadius: 2,
+//             padding: "10px 0",
+//             "&:hover": {
+//               borderColor: "#cc0000",
+//               backgroundColor: "rgba(255, 0, 0, 0.04)",
+//             },
+//           }}
+//         >
+//           Select File
+//           <input type="file" onChange={handleFileChange} hidden />
+//         </Button>
+//         {file && <Box sx={{ mt: 1, fontSize: "0.875rem", color: "text.secondary" }}>Selected: {file.name}</Box>}
+//       </Box>
 
-      <Button
-        onClick={handleUpload}
-        variant="contained"
-        fullWidth
-        disabled={!file}
+//       <Button
+//         onClick={handleUpload}
+//         variant="contained"
+//         fullWidth
+//         disabled={!file}
+//         sx={{
+//           backgroundColor: "#722F37",
+//           color: "white",
+//           borderRadius: 2,
+//           padding: "10px 0",
+//           textTransform: "none",
+//           fontWeight: "bold",
+//           "&:hover": {
+//             backgroundColor: "#cc0000",
+//           },
+//           "&.Mui-disabled": {
+//             backgroundColor: "#ffcccc",
+//             color: "#990000",
+//           },
+//         }}
+//       >
+//         Upload File
+//       </Button>
+
+//       {progress > 0 && (
+//         <Box sx={{ mt: 2 }}>
+//           <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+//             <Box sx={{ width: "100%", mr: 1 }}>
+//               <LinearProgress
+//                 variant="determinate"
+//                 value={progress}
+//                 sx={{
+//                   height: 10,
+//                   borderRadius: 5,
+//                   backgroundColor: "#ffcccc",
+//                   "& .MuiLinearProgress-bar": {
+//                     backgroundColor: "#722F37",
+//                   },
+//                 }}
+//               />
+//             </Box>
+//             <Box sx={{ minWidth: 35 }}>
+//               <Typography variant="body2" color="text.secondary">{`${Math.round(progress)}%`}</Typography>
+//             </Box>
+//           </Box>
+//           <Typography variant="caption" color="text.secondary">
+//             Uploading: {file?.name}
+//           </Typography>
+//         </Box>
+//       )}
+//     </Box>
+//     </>
+//   )
+// }
+
+// export default FileUploader
+const formatFileSize = (bytes: number) => {
+    if (bytes === 0) return '0 Bytes'
+    const k = 1024
+    const sizes = ['Bytes', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+  }
+
+  return (
+    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+      {/* Sidebar and Header */}
+      {LoggedIn && <Sidebar />}
+      {!LoggedIn && <Header />}
+
+      {/* Main Content */}
+      <Box
+        component="main"
         sx={{
-          backgroundColor: "#722F37",
-          color: "white",
-          borderRadius: 2,
-          padding: "10px 0",
-          textTransform: "none",
-          fontWeight: "bold",
-          "&:hover": {
-            backgroundColor: "#cc0000",
-          },
-          "&.Mui-disabled": {
-            backgroundColor: "#ffcccc",
-            color: "#990000",
+          flexGrow: 1,
+          marginLeft: LoggedIn ? '280px' : '0',
+          minHeight: '100vh',
+          backgroundColor: '#f5f5f5',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 3,
+          transition: 'margin-left 0.3s ease',
+          '@media (max-width: 960px)': {
+            marginLeft: '0',
           },
         }}
       >
-        Upload File
-      </Button>
+        <Paper
+          elevation={8}
+          sx={{
+            padding: 4,
+            borderRadius: 4,
+            backgroundColor: "white",
+            width: "100%",
+            maxWidth: 500,
+            boxShadow: "0 12px 40px rgba(114, 47, 55, 0.15)",
+            border: '1px solid rgba(114, 47, 55, 0.05)',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Header */}
+          <Box sx={{ textAlign: 'center', mb: 4 }}>
+            <CloudUploadIcon 
+              sx={{ 
+                fontSize: 48, 
+                color: '#722F37', 
+                mb: 2,
+                opacity: 0.8 
+              }} 
+            />
+            <Typography 
+              variant="h4" 
+              sx={{ 
+                fontWeight: 'bold', 
+                color: '#722F37',
+                mb: 1 
+              }}
+            >
+              Upload Resume
+            </Typography>
+            <Typography 
+              variant="body1" 
+              sx={{ 
+                color: 'text.secondary',
+                fontSize: '1.1rem' 
+              }}
+            >
+              Select your resume file to get started
+            </Typography>
+          </Box>
 
-      {progress > 0 && (
-        <Box sx={{ mt: 2 }}>
-          <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-            <Box sx={{ width: "100%", mr: 1 }}>
-              <LinearProgress
-                variant="determinate"
-                value={progress}
+          {/* Upload Area */}
+          <Box sx={{ mb: 3 }}>
+            <input
+              accept=".pdf,.doc,.docx"
+              style={{ display: 'none' }}
+              id="file-upload"
+              type="file"
+              onChange={handleFileChange}
+            />
+            <label htmlFor="file-upload">
+              <Button
+                variant="outlined"
+                component="span"
+                fullWidth
+                startIcon={<CloudUploadIcon />}
                 sx={{
-                  height: 10,
-                  borderRadius: 5,
-                  backgroundColor: "#ffcccc",
-                  "& .MuiLinearProgress-bar": {
-                    backgroundColor: "#722F37",
+                  borderColor: "#722F37",
+                  color: "#722F37",
+                  borderRadius: 3,
+                  padding: "16px 24px",
+                  fontSize: '1.1rem',
+                  borderWidth: 2,
+                  borderStyle: 'dashed',
+                  transition: 'all 0.3s ease',
+                  "&:hover": {
+                    borderColor: "#8B3A42",
+                    backgroundColor: "rgba(114, 47, 55, 0.04)",
+                    borderStyle: 'solid',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 8px 25px rgba(114, 47, 55, 0.15)',
                   },
                 }}
-              />
-            </Box>
-            <Box sx={{ minWidth: 35 }}>
-              <Typography variant="body2" color="text.secondary">{`${Math.round(progress)}%`}</Typography>
-            </Box>
+              >
+                Choose File
+              </Button>
+            </label>
+
+            {/* File Info */}
+            {file && (
+              <Fade in={true}>
+                <Box 
+                  sx={{ 
+                    mt: 2, 
+                    p: 2, 
+                    backgroundColor: 'rgba(114, 47, 55, 0.05)',
+                    borderRadius: 2,
+                    border: '1px solid rgba(114, 47, 55, 0.1)'
+                  }}
+                >
+                  <Typography variant="body2" sx={{ fontWeight: 'medium', color: '#722F37' }}>
+                    Selected File:
+                  </Typography>
+                  <Typography variant="body1" sx={{ mt: 0.5 }}>
+                    {file.name}
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                    Size: {formatFileSize(file.size)}
+                  </Typography>
+                </Box>
+              </Fade>
+            )}
           </Box>
-          <Typography variant="caption" color="text.secondary">
-            Uploading: {file?.name}
-          </Typography>
-        </Box>
-      )}
+
+          {/* Upload Button */}
+          <Button
+            onClick={handleUpload}
+            variant="contained"
+            fullWidth
+            disabled={!file || uploading}
+            startIcon={
+              uploading ? <CircularProgress size={20} color="inherit" /> : 
+              uploadStatus === 'success' ? <CheckCircleIcon /> : 
+              <CloudUploadIcon />
+            }
+            sx={{
+              backgroundColor: "#722F37",
+              color: "white",
+              borderRadius: 3,
+              padding: "16px 24px",
+              fontSize: '1.1rem',
+              fontWeight: "bold",
+              textTransform: "none",
+              boxShadow: '0 8px 25px rgba(114, 47, 55, 0.3)',
+              transition: 'all 0.3s ease',
+              "&:hover": {
+                backgroundColor: "#8B3A42",
+                boxShadow: '0 12px 35px rgba(114, 47, 55, 0.4)',
+                transform: 'translateY(-2px)',
+              },
+              "&:active": {
+                transform: 'translateY(0)',
+              },
+              "&.Mui-disabled": {
+                backgroundColor: "#cccccc",
+                color: "#888888",
+                boxShadow: 'none',
+              },
+            }}
+          >
+            {uploading ? 'Uploading...' : 
+             uploadStatus === 'success' ? 'Upload Complete!' : 
+             'Upload File'}
+          </Button>
+
+          {/* Progress Bar */}
+          {progress > 0 && progress < 100 && (
+            <Fade in={true}>
+              <Box sx={{ mt: 3 }}>
+                <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                  <Box sx={{ width: "100%", mr: 1 }}>
+                    <LinearProgress
+                      variant="determinate"
+                      value={progress}
+                      sx={{
+                        height: 12,
+                        borderRadius: 6,
+                        backgroundColor: "rgba(114, 47, 55, 0.1)",
+                        "& .MuiLinearProgress-bar": {
+                          backgroundColor: "#722F37",
+                          borderRadius: 6,
+                        },
+                      }}
+                    />
+                  </Box>
+                  <Box sx={{ minWidth: 35 }}>
+                    <Typography 
+                      variant="body2" 
+                      sx={{ 
+                        color: "#722F37", 
+                        fontWeight: 'bold' 
+                      }}
+                    >
+                      {`${Math.round(progress)}%`}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Typography 
+                  variant="caption" 
+                  sx={{ 
+                    color: 'text.secondary',
+                    display: 'block',
+                    textAlign: 'center' 
+                  }}
+                >
+                  Uploading: {file?.name}
+                </Typography>
+              </Box>
+            </Fade>
+          )}
+
+          {/* Status Messages */}
+          {uploadStatus === 'success' && (
+            <Fade in={true}>
+              <Alert 
+                severity="success" 
+                sx={{ 
+                  mt: 3,
+                  borderRadius: 2,
+                  '& .MuiAlert-icon': {
+                    color: '#722F37'
+                  }
+                }}
+              >
+                File uploaded successfully!
+              </Alert>
+            </Fade>
+          )}
+
+          {uploadStatus === 'error' && (
+            <Fade in={true}>
+              <Alert 
+                severity="error" 
+                sx={{ 
+                  mt: 3,
+                  borderRadius: 2 
+                }}
+              >
+                {errorMessage}
+              </Alert>
+            </Fade>
+          )}
+
+          {/* Decorative Elements */}
+          <Box
+            sx={{
+              position: 'absolute',
+              top: -50,
+              right: -50,
+              width: 100,
+              height: 100,
+              borderRadius: '50%',
+              backgroundColor: 'rgba(114, 47, 55, 0.05)',
+              zIndex: -1,
+            }}
+          />
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: -30,
+              left: -30,
+              width: 60,
+              height: 60,
+              borderRadius: '50%',
+              backgroundColor: 'rgba(114, 47, 55, 0.03)',
+              zIndex: -1,
+            }}
+          />
+        </Paper>
+      </Box>
     </Box>
-    </>
   )
 }
 
