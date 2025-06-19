@@ -77,129 +77,135 @@ const Sidebar: React.FC = () => {
 
   return (
     <>
-    <Box
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        bgcolor: '#722F37',
-        color: 'white',
-        height: '100vh',
-        position: 'relative', // או relative, לפי איך אתה רוצה שיתנהג
-        // אם fixed, אז תוודא שה-Box של התוכן שלך יש לו פדינג מתאים
-      }}
-    >
-      {/* תכולת הסיידבר */}
-    
-      {/* Mobile menu button */}
-      {isMobile && (
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          edge="start"
-          onClick={handleDrawerToggle}
-          sx={{
-            position: "relative",
-            top: 10,
-            right: 10,
-            zIndex: 1300,
-            backgroundColor: "rgba(255, 255, 255, 0.9)",
-            boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-            "&:hover": {
-              backgroundColor: "rgba(255, 255, 255, 1)",
-            },
-          }}
-        >
-          <MenuIcon sx={{ color: "#722F37" }} />
-        </IconButton>
-      )}
-
-      {/* Sidebar */}
-      <Drawer
-        variant={isMobile ? "temporary" : "permanent"}
-        open={open}
-        onClose={isMobile ? handleDrawerToggle : undefined}
+      <Box
         sx={{
           width: drawerWidth,
           flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-            boxSizing: "border-box",
-            borderRight: "1px solid rgba(0, 0, 0, 0.08)",
-            boxShadow: "4px 0 10px rgba(0, 0, 0, 0.05)",
-            backgroundColor: "white",
-            direction: "rtl", // RTL support
-          },
+          bgcolor: '#722F37',
+          color: 'white',
+          height: '100vh',
+          position: 'relative', // או relative, לפי איך אתה רוצה שיתנהג
+          // אם fixed, אז תוודא שה-Box של התוכן שלך יש לו פדינג מתאים
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-          {/* Header */}
-          <Box
+        {/* תכולת הסיידבר */}
+
+        {/* Mobile menu button */}
+        {isMobile && (
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: 2,
-              backgroundColor: "rgba(255, 0, 0, 0.03)",
+              position: "relative",
+              top: 10,
+              right: 10,
+              zIndex: 1300,
+              backgroundColor: "rgba(255, 255, 255, 0.9)",
+              boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+              "&:hover": {
+                backgroundColor: "rgba(255, 255, 255, 1)",
+              },
             }}
           >
-            <Typography
-              variant="h6"
-              component="div"
+            <MenuIcon sx={{ color: "#722F37" }} />
+          </IconButton>
+        )}
+
+        {/* Sidebar */}
+        <Drawer
+          variant={isMobile ? "temporary" : "permanent"}
+          open={open}
+          onClose={isMobile ? handleDrawerToggle : undefined}
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: "border-box",
+              borderRight: "1px solid rgba(0, 0, 0, 0.08)",
+              boxShadow: "4px 0 10px rgba(0, 0, 0, 0.05)",
+              backgroundColor: "white",
+              direction: "rtl", // RTL support
+            },
+          }}
+        >
+          <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+            {/* Header */}
+            <Box
               sx={{
-                fontWeight: "bold",
-                color: "#722F37",
-                textShadow: "1px 1px 2px rgba(0,0,0,0.1)",
-                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                letterSpacing: "-0.5px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: 2,
+                backgroundColor: "rgba(255, 0, 0, 0.03)",
               }}
             >
-              Matchmaker Pro
-            </Typography>
-            {isMobile && (
-              <IconButton onClick={handleDrawerToggle}>
-                <ChevronLeftIcon />
-              </IconButton>
-            )}
-          </Box>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  fontWeight: "bold",
+                  color: "#722F37",
+                  textShadow: "1px 1px 2px rgba(0,0,0,0.1)",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  letterSpacing: "-0.5px",
+                }}
+              >
+                Matchmaker Pro
+              </Typography>
+              {isMobile && (
+                <IconButton onClick={handleDrawerToggle}>
+                  <ChevronLeftIcon />
+                </IconButton>
+              )}
+            </Box>
 
-          <Divider />
+            <Divider />
 
-          {/* Search Component */}
-          {/* <Box sx={{ padding: 2 }}>
+            {/* Search Component */}
+            {/* <Box sx={{ padding: 2 }}>
             <SearchComponent />
           </Box> */}
 
-          <Divider />
+            <Divider />
 
-          {/* Navigation */}
-          <List sx={{ flexGrow: 1, padding: 1 }}>
-            <ListItem disablePadding>
-              <ListItemButton
-                component={Link}
-                to="/"
-                selected={isActive("/")}
-                sx={{
-                  borderRadius: 1,
-                  mb: 0.5,
-                  "&.Mui-selected": {
-                    backgroundColor: "rgba(255, 0, 0, 0.08)",
-                    "&:hover": {
-                      backgroundColor: "rgba(255, 0, 0, 0.12)",
+            {/* Navigation */}
+            <List sx={{ flexGrow: 1, padding: 1 }}>
+              <ListItem disablePadding>
+                <ListItemButton
+                  component={Link}
+                  to="/"
+                  selected={isActive("/")}
+                  sx={{
+                    borderRadius: 1,
+                    mb: 0.5,
+                    "&.Mui-selected": {
+                      backgroundColor: "rgba(255, 0, 0, 0.08)",
+                      "&:hover": {
+                        backgroundColor: "rgba(255, 0, 0, 0.12)",
+                      },
                     },
-                  },
-                  "&:hover": {
-                    backgroundColor: "rgba(255, 0, 0, 0.04)",
-                  },
-                }}
-              >
-                <ListItemIcon sx={{ minWidth: 40 }}>
-                  <HomeIcon sx={{ color: isActive("/") ? "#722F37" : "inherit" }} />
-                </ListItemIcon>
-                <ListItemText primary="home page" />
-              </ListItemButton>
-            </ListItem>
+                    "&:hover": {
+                      backgroundColor: "rgba(255, 0, 0, 0.04)",
+                    },
+                    "&:hover .MuiListItemText-primary": {
+                      color: "#722F37",
+                    },
+                    "&:hover .MuiSvgIcon-root": {
+                      color: "#722F37", // Change icon color on hover
+                    },
+                  }}
+                >
+                  <ListItemIcon sx={{ minWidth: 40 }}>
+                    <HomeIcon sx={{ color: isActive("/") ? "#722F37" : "inherit" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="home page" />
+                </ListItemButton>
+              </ListItem>
 
-            {/* <ListItem disablePadding>
+              {/* <ListItem disablePadding>
               <ListItemButton
                 component={Link}
                 to="/dashboard"
@@ -225,32 +231,39 @@ const Sidebar: React.FC = () => {
               </ListItemButton>
             </ListItem> */}
 
-            <ListItem disablePadding>
-              <ListItemButton
-                component={Link}
-                to="/userFiles"
-                selected={isActive("/userFiles")}
-                sx={{
-                  borderRadius: 1,
-                  mb: 0.5,
-                  "&.Mui-selected": {
-                    backgroundColor: "rgba(255, 0, 0, 0.08)",
-                    "&:hover": {
-                      backgroundColor: "rgba(255, 0, 0, 0.12)",
+              <ListItem disablePadding>
+                <ListItemButton
+                  component={Link}
+                  to="/userFiles"
+                  selected={isActive("/userFiles")}
+                  sx={{
+                    borderRadius: 1,
+                    mb: 0.5,
+                    "&.Mui-selected": {
+                      backgroundColor: "rgba(255, 0, 0, 0.08)",
+                      "&:hover": {
+                        backgroundColor: "rgba(255, 0, 0, 0.12)",
+                      },
                     },
-                  },
-                  "&:hover": {
-                    backgroundColor: "rgba(255, 0, 0, 0.04)",
-                  },
-                }}
-              >
-                <ListItemIcon sx={{ minWidth: 40 }}>
-                  <DescriptionIcon sx={{ color: isActive("/userFiles") ? "#722F37" : "inherit" }} />
-                </ListItemIcon>
-                <ListItemText primary="resumes" />
-              </ListItemButton>
-            </ListItem>
-{/* 
+                    "&:hover": {
+                      backgroundColor: "rgba(255, 0, 0, 0.04)",
+                    },
+                    "&:hover .MuiListItemText-primary": {
+                      color: "#722F37",
+                    },
+
+                    "&:hover .MuiSvgIcon-root": {
+                      color: "#722F37",
+                    },
+                  }}
+                >
+                  <ListItemIcon sx={{ minWidth: 40 }}>
+                    <DescriptionIcon sx={{ color: isActive("/userFiles") ? "#722F37" : "inherit" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="resumes" />
+                </ListItemButton>
+              </ListItem>
+              {/* 
             <ListItem disablePadding>
               <ListItemButton
                 onClick={handleUploadToggle}
@@ -276,92 +289,112 @@ const Sidebar: React.FC = () => {
               </Box>
             </Collapse> */}
 
-            <ListItem disablePadding>
-  <ListItemButton
-    component={Link}
-    to="/uploadfile"
-    selected={isActive("/uploadfile")}
-    sx={{
-      borderRadius: 1,
-      mb: 0.5,
-      "&.Mui-selected": {
-        backgroundColor: "rgba(255, 0, 0, 0.08)",
-        "&:hover": {
-          backgroundColor: "rgba(255, 0, 0, 0.12)",
-        },
-      },
-      "&:hover": {
-        backgroundColor: "rgba(255, 0, 0, 0.04)",
-      },
-    }}
-  >
-    <ListItemIcon sx={{ minWidth: 40 }}>
-      <UploadIcon sx={{ color: isActive("/uploadfile") ? "#722F37" : "inherit" }} />
-    </ListItemIcon>
-    <ListItemText primary="upload file" />
-  </ListItemButton>
-</ListItem>
-
-
-            <Divider sx={{ my: 1.5 }} />
-
-            <ListItem disablePadding>
-              <ListItemButton
-                component={Link}
-                to="/about"
-                selected={isActive("/about")}
-                sx={{
-                  borderRadius: 1,
-                  mb: 0.5,
-                  "&.Mui-selected": {
-                    backgroundColor: "rgba(255, 0, 0, 0.08)",
-                    "&:hover": {
-                      backgroundColor: "rgba(255, 0, 0, 0.12)",
+              <ListItem disablePadding>
+                <ListItemButton
+                  component={Link}
+                  to="/uploadfile"
+                  selected={isActive("/uploadfile")}
+                  sx={{
+                    borderRadius: 1,
+                    mb: 0.5,
+                    "&.Mui-selected": {
+                      backgroundColor: "rgba(255, 0, 0, 0.08)",
+                      "&:hover": {
+                        backgroundColor: "rgba(255, 0, 0, 0.12)",
+                      },
                     },
-                  },
-                  "&:hover": {
-                    backgroundColor: "rgba(255, 0, 0, 0.04)",
-                  },
-                }}
-              >
-                <ListItemIcon sx={{ minWidth: 40 }}>
-                  <InfoIcon sx={{ color: isActive("/about") ? "#722F37" : "inherit" }} />
-                </ListItemIcon>
-                <ListItemText primary="about" />
-              </ListItemButton>
-            </ListItem>
-
-            <ListItem disablePadding>
-              <ListItemButton
-                component={Link}
-                to="/contact"
-                selected={isActive("/contact")}
-                sx={{
-                  borderRadius: 1,
-                  mb: 0.5,
-                  "&.Mui-selected": {
-                    backgroundColor: "rgba(255, 0, 0, 0.08)",
                     "&:hover": {
-                      backgroundColor: "rgba(255, 0, 0, 0.12)",
+                      backgroundColor: "rgba(255, 0, 0, 0.04)",
                     },
-                  },
-                  "&:hover": {
-                    backgroundColor: "rgba(255, 0, 0, 0.04)",
-                  },
-                }}
-              >
-                <ListItemIcon sx={{ minWidth: 40 }}>
-                  <ContactMailIcon sx={{ color: isActive("/contact") ? "#722F37" : "inherit" }} />
-                </ListItemIcon>
-                <ListItemText primary="contact" />
-              </ListItemButton>
-            </ListItem>
-          </List>
+                    "&:hover .MuiSvgIcon-root": {
+                      color: "#722F37", // 👈 ADD THIS
+                    },
+                    "&:hover .MuiListItemText-primary": {
+                      color: "#722F37",
+                    },
 
-          {/* Footer */}
-          <Box sx={{ padding: 2 }}>
-            <Divider sx={{ mb: 2 }} />
-            {/* <ListItem disablePadding>
+                  }}
+
+                >
+                  <ListItemIcon sx={{ minWidth: 40 }}>
+                    <UploadIcon sx={{ color: isActive("/uploadfile") ? "#722F37" : "inherit" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="upload file" />
+                </ListItemButton>
+              </ListItem>
+
+
+              <Divider sx={{ my: 1.5 }} />
+
+              <ListItem disablePadding>
+                <ListItemButton
+                  component={Link}
+                  to="/about"
+                  selected={isActive("/about")}
+                  sx={{
+                    borderRadius: 1,
+                    mb: 0.5,
+                    "&.Mui-selected": {
+                      backgroundColor: "rgba(255, 0, 0, 0.08)",
+                      "&:hover": {
+                        backgroundColor: "rgba(255, 0, 0, 0.12)",
+                      },
+                    },
+                    "&:hover": {
+                      backgroundColor: "rgba(255, 0, 0, 0.04)",
+                    },
+                    "&:hover .MuiListItemText-primary": {
+                      color: "#722F37",
+                    },
+                    "&:hover .MuiSvgIcon-root": {
+                      color: "#722F37", // Change icon color on hover
+                    },
+                  }}
+                >
+                  <ListItemIcon sx={{ minWidth: 40 }}>
+                    <InfoIcon sx={{ color: isActive("/about") ? "#722F37" : "inherit" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="about" />
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem disablePadding>
+                <ListItemButton
+                  component={Link}
+                  to="/contact"
+                  selected={isActive("/contact")}
+                  sx={{
+                    borderRadius: 1,
+                    mb: 0.5,
+                    "&.Mui-selected": {
+                      backgroundColor: "rgba(255, 0, 0, 0.08)",
+                      "&:hover": {
+                        backgroundColor: "rgba(255, 0, 0, 0.12)",
+                      },
+                    },
+                    "&:hover": {
+                      backgroundColor: "rgba(255, 0, 0, 0.04)",
+                    },
+                    "&:hover .MuiListItemText-primary": {
+                      color: "#722F37",
+                    },
+                    "&:hover .MuiSvgIcon-root": {
+                      color: "#722F37", // Change icon color on hover
+                    },
+                  }}
+                >
+                  <ListItemIcon sx={{ minWidth: 40 }}>
+                    <ContactMailIcon sx={{ color: isActive("/contact") ? "#722F37" : "inherit" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="contact" />
+                </ListItemButton>
+              </ListItem>
+            </List>
+
+            {/* Footer */}
+            <Box sx={{ padding: 2 }}>
+              <Divider sx={{ mb: 2 }} />
+              {/* <ListItem disablePadding>
               <ListItemButton
                 component={Link}
                 to="/profile"
@@ -380,7 +413,7 @@ const Sidebar: React.FC = () => {
               </ListItemButton>
             </ListItem> */}
 
-            {/* <ListItem disablePadding>
+              {/* <ListItem disablePadding>
               <ListItemButton
                 component={Link}
                 to="/settings"
@@ -399,29 +432,29 @@ const Sidebar: React.FC = () => {
               </ListItemButton>
             </ListItem> */}
 
-            <ListItem disablePadding>
-              <ListItemButton
-                onClick={handleLogout}
-                sx={{
-                  borderRadius: 1,
-                  color: "#722F37",
-                  "&:hover": {
-                    backgroundColor: "rgba(255, 0, 0, 0.04)",
-                  },
-                }}
-              >
-                <ListItemIcon sx={{ minWidth: 40 }}>
-                  <LogoutIcon sx={{ color: "#722F37" }} />
-                </ListItemIcon>
-                <ListItemText primary="sign out" />
-              </ListItemButton>
-            </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton
+                  onClick={handleLogout}
+                  sx={{
+                    borderRadius: 1,
+                    color: "#722F37",
+                    "&:hover": {
+                      backgroundColor: "rgba(255, 0, 0, 0.04)",
+                    },
+                  }}
+                >
+                  <ListItemIcon sx={{ minWidth: 40 }}>
+                    <LogoutIcon sx={{ color: "#722F37" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="sign out" />
+                </ListItemButton>
+              </ListItem>
+            </Box>
           </Box>
-        </Box>
-      </Drawer>
+        </Drawer>
 
-      {/* Main content - add padding to account for the sidebar */}
-      {/* <Box
+        {/* Main content - add padding to account for the sidebar */}
+        {/* <Box
         component="main"
         sx={{
           flexGrow: 1,
@@ -433,7 +466,7 @@ const Sidebar: React.FC = () => {
         }}
       >
         {/* Your main content goes here */}
-      {/* </Box> */}
+        {/* </Box> */}
       </Box>
     </>
   )

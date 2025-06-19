@@ -1,13 +1,17 @@
 import { Button, CardContent, Input } from "@mui/material";
 import Card from "@mui/material/Card";
-import React, {  useState } from "react";
+import React, {  useContext, useState } from "react";
 import Textarea from "@mui/material/TextareaAutosize";
+import { IsLoggedIn } from "../App";
+import Header from "./header";
+import Sidebar from "./sideBar";
 // import { Card, CardContent } from "@/components/ui/card";
 // import { Button } from "@/components/ui/button";
 // import { Input } from "@/components/ui/input";
 // import { Textarea } from "@/components/ui/textarea";
 
 const Contact = () => {
+  const { LoggedIn } = useContext(IsLoggedIn)
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -27,6 +31,9 @@ const Contact = () => {
 
 
   return (
+    <>
+     {!LoggedIn && <Header/>}
+    {LoggedIn && <Sidebar/>}
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <Card className="w-full max-w-xl p-6 shadow-2xl rounded-2xl bg-white">
         <CardContent>
@@ -63,6 +70,7 @@ const Contact = () => {
         </CardContent>
       </Card>
     </div>
+    </>
   );
 };
 

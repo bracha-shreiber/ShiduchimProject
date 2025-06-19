@@ -252,13 +252,17 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import axios from "axios"
 import { Box, Button, LinearProgress, Typography } from "@mui/material"
+import Header from "./header"
+import Sidebar from "./sideBar"
+import { IsLoggedIn } from "../App"
 
 const FileUploader = () => {
   const [file, setFile] = useState<File | null>(null)
   const [progress, setProgress] = useState(0)
+   const { LoggedIn } = useContext(IsLoggedIn)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     debugger
@@ -334,6 +338,9 @@ const FileUploader = () => {
   }
 
   return (
+    <>
+    {!LoggedIn && <Header/>}
+    {LoggedIn && <Sidebar/>}
     <Box
       sx={{
         padding: 3,
@@ -418,6 +425,7 @@ const FileUploader = () => {
         </Box>
       )}
     </Box>
+    </>
   )
 }
 

@@ -286,7 +286,7 @@ const onSubmit = async (userData: any) => {
 
     return (
         <>
-        <Header />
+        {/* <Header />
          <Dialog open={close&&!LoggedIn} onClose={() => setClose(false)}>
             <DialogTitle>{"SignUp"}</DialogTitle>
             <DialogContent>
@@ -359,7 +359,203 @@ const onSubmit = async (userData: any) => {
                     </form>
                 </Box>
             </DialogContent>
-        </Dialog>
+        </Dialog> */}
+        <Header />
+<Dialog
+  open={close && !LoggedIn}
+  onClose={() => setClose(false)}
+  PaperProps={{
+    sx: {
+      borderRadius: 2,
+      boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
+      overflow: "hidden",
+    },
+  }}
+>
+  <DialogTitle
+    sx={{
+      backgroundColor: "#722F37",
+      color: "white",
+      fontWeight: "bold",
+      padding: "16px 24px",
+    }}
+  >
+    {"Sign Up"}
+  </DialogTitle>
+  <DialogContent sx={{ padding: 0 }}>
+    <Box
+      sx={{
+        width: 350,
+        padding: 3,
+        backgroundColor: "white",
+      }}
+    >
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TextField
+          variant="outlined"
+          label="Email"
+          type="text"
+          fullWidth
+          margin="normal"
+          {...register("email", { required: true })}
+          error={!!errors.email}
+          helperText={errors.email ? "This field is required" : ""}
+          InputProps={{
+            sx: {
+              borderRadius: 1.5,
+              "&.Mui-focused": {
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#722F37",
+                },
+              },
+            },
+          }}
+          InputLabelProps={{
+            sx: {
+              "&.Mui-focused": {
+                color: "#722F37",
+              },
+            },
+          }}
+        />
+        <TextField
+          variant="outlined"
+          label="Password"
+          type="password"
+          fullWidth
+          margin="normal"
+          {...register("password", { required: true })}
+          error={!!errors.password}
+          helperText={errors.password ? "This field is required" : ""}
+          InputProps={{
+            sx: {
+              borderRadius: 1.5,
+              "&.Mui-focused": {
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#722F37",
+                },
+              },
+            },
+          }}
+          InputLabelProps={{
+            sx: {
+              "&.Mui-focused": {
+                color: "#722F37",
+              },
+            },
+          }}
+        />
+        <TextField
+          variant="outlined"
+          label="Name"
+          type="name"
+          fullWidth
+          margin="normal"
+          {...register("username", { required: true })}
+          error={!!errors.name}
+          helperText={errors.name ? "This field is required" : ""}
+          InputProps={{
+            sx: {
+              borderRadius: 1.5,
+              "&.Mui-focused": {
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#722F37",
+                },
+              },
+            },
+          }}
+          InputLabelProps={{
+            sx: {
+              "&.Mui-focused": {
+                color: "#722F37",
+              },
+            },
+          }}
+        />
+        {/* <TextField
+          variant="outlined"
+          label="Phone"
+          type="phone"
+          fullWidth
+          margin="normal"
+          {...register("phone", { required: true })}
+          error={!!errors.phone}
+          helperText={errors.phone ? "This field is required" : ""}
+          InputProps={{
+            sx: {
+              borderRadius: 1.5,
+              "&.Mui-focused": {
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#722F37",
+                },
+              },
+            },
+          }}
+          InputLabelProps={{
+            sx: {
+              "&.Mui-focused": {
+                color: "#722F37",
+              },
+            },
+          }}
+        /> */}
+        {/* <TextField
+          variant="outlined"
+          label="Address"
+          type="text"
+          fullWidth
+          margin="normal"
+          {...register("address", { required: true })}
+          error={!!errors.address}
+          helperText={errors.address ? "This field is required" : ""}
+          InputProps={{
+            sx: {
+              borderRadius: 1.5,
+              "&.Mui-focused": {
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#722F37",
+                },
+              },
+            },
+          }}
+          InputLabelProps={{
+            sx: {
+              "&.Mui-focused": {
+                color: "#722F37",
+              },
+            },
+          }} */}
+        {/* /> */}
+        <p>
+          Already have an account?{" "}
+          <a href="/signin" style={{ color: "#722F37", cursor: "pointer" }}>Sign In</a>
+        </p>
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth
+          sx={{
+            mt: 3,
+            mb: 1,
+            backgroundColor: "#722F37",
+            color: "white",
+            borderRadius: 1.5,
+            padding: "12px 0",
+            textTransform: "none",
+            fontWeight: "bold",
+            fontSize: "1rem",
+            "&:hover": {
+              backgroundColor: "#722F37",
+            },
+          }}
+        >
+          Register
+        </Button>
+      </form>
+    </Box>
+  </DialogContent>
+</Dialog>
+
       </>
        
        

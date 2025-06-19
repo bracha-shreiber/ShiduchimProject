@@ -528,7 +528,7 @@ export default () => {
               />
               <p>
                 Don't have an account?{" "}
-                <a href="/signup" style={{ color: 'red', cursor: 'pointer' }}>Sign Up</a>
+                <a href="/signup" style={{ color: '#722F37', cursor: 'pointer' }}>Sign Up</a>
               </p>
 
               <Button
@@ -546,7 +546,7 @@ export default () => {
                   fontWeight: "bold",
                   fontSize: "1rem",
                   "&:hover": {
-                    backgroundColor: "#cc0000",
+                    backgroundColor: "#722F37",
                   },
                 }}
               >

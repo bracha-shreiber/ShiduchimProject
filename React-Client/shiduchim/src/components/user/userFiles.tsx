@@ -262,7 +262,7 @@
 // };
 
 // export default UserFiles;
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { fetchFilesByUserId, downloadFile, showFile } from '../../store/filesStore';
@@ -271,11 +271,13 @@ import Header from '../header';
 import SearchComponent from '../files/search';
 import ShareIcon from '@mui/icons-material/Share';
 import SharingComponent from '../files/shareFiles';
+import { IsLoggedIn } from '../../App';
+import Sidebar from '../sideBar';
 
 const UserFiles: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const userId = sessionStorage.getItem("userId");
-
+  const { LoggedIn } = useContext(IsLoggedIn);
   const files = useSelector((state: RootState) => state.files.files);
   const error = useSelector((state: RootState) => state.files.error);
   const [share,setShare] = useState<boolean>(false);
@@ -366,7 +368,9 @@ const UserFiles: React.FC = () => {
 
   return (
     <>
-      <Header />
+    {!LoggedIn && <Header/>}
+    {LoggedIn && <Sidebar/>}
+      {/* <Header /> */}
       <div style={styles.header}>
         <h2 style={styles.title}>ניהול קבצים</h2>
         <p style={styles.subtitle}>צפייה וניהול פרופילים של משתמשים</p>

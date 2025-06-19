@@ -1,22 +1,26 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Header from './header'
+// import { Directions } from '@mui/icons-material'
+import { IsLoggedIn } from '../App'
+import Sidebar from './sideBar'
 
 const AboutComponent: React.FC = () => {
+  const { LoggedIn } = useContext(IsLoggedIn)
   return (
     <>
-    <Header/>
+    {!LoggedIn && <Header/>}
+    {LoggedIn && <Sidebar/>}
+    {/* <Header/> */}
     <div style={styles.container}>
-      <h1 style={styles.title}>אודות האתר</h1>
+      <h1 style={styles.title}>About the Site</h1>
       <p style={styles.text}>
-        אתר זה נועד לסייע לשדכנים ולשדכניות בניהול תהליך השידוכים בצורה חכמה, מסודרת ויעילה.
-        תוכלו להעלות קבצי רזומה של מועמדים, לבצע חיפושים לפי קריטריונים, ליצור קשרים, לשתף מידע עם שדכנים אחרים, ולעקוב אחרי סטטוס ההצעות שלכם.
+        This site is designed to assist matchmakers in managing the matchmaking process intelligently, orderly, and efficiently.
+        You can upload candidate resume files, perform searches by criteria, create connections, share information with other matchmakers, and track the status of your proposals.
       </p>
       <p style={styles.text}>
-        האתר תוכנן במיוחד לצורכי קהילת השידוכים, עם ממשק פשוט ונוח, תוך שמירה על פרטיות המידע והקפדה על כללי צניעות והתאמה אישית.
-      </p>
+The site is specifically tailored to the needs of the matchmaking community, featuring a simple and user-friendly interface, while maintaining information privacy and adhering to standards of modesty and personalized matching.      </p>
       <p style={styles.text}>
-        אנו מזמינים אתכם להשתמש בכלי החכם הזה כדי לייעל את העבודה ולהגביר את הסיכוי להצלחות!
-      </p>
+We invite you to use this smart tool to streamline your work and increase the chances of success!      </p>
     </div>
     </>
   )
@@ -35,7 +39,7 @@ const styles = {
   } as React.CSSProperties,
   title: {
     fontSize: '2rem',
-    color: '#d32f2f',
+    color: '#722F37',
     marginBottom: '1rem',
   },
   text: {
@@ -43,6 +47,7 @@ const styles = {
     lineHeight: '1.8',
     color: '#333',
     marginBottom: '1rem',
+    // direction removed to fix type error
   },
 }
 
