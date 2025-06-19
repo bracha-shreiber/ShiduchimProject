@@ -16,29 +16,29 @@ import {
   Divider,
   useMediaQuery,
   useTheme,
-  Collapse,
+  // Collapse,
 } from "@mui/material"
 import {
   Menu as MenuIcon,
   Home as HomeIcon,
-  Dashboard as DashboardIcon,
+  // Dashboard as DashboardIcon,
   Description as DescriptionIcon,
   Upload as UploadIcon,
-  Person as PersonIcon,
+  // Person as PersonIcon,
   Info as InfoIcon,
   ContactMail as ContactMailIcon,
   ChevronLeft as ChevronLeftIcon,
-  ExpandLess,
-  ExpandMore,
+  // ExpandLess,
+  // ExpandMore,
   Logout as LogoutIcon,
-  Settings as SettingsIcon,
+  // Settings as SettingsIcon,
 } from "@mui/icons-material"
 import { IsLoggedIn, userContext } from "../App"
 import type { User } from "../types/user"
 // import SearchComponent from "./search-component"
-import FileUploader from "./uploadFile"
+// import FileUploader from "./uploadFile"
 import { useNavigate } from "react-router-dom"
-import SearchComponent from "./files/search"
+// import SearchComponent from "./files/search"
 
 // Drawer width
 const drawerWidth = 280
@@ -47,7 +47,7 @@ const Sidebar: React.FC = () => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
   const [open, setOpen] = useState(!isMobile)
-  const [uploadOpen, setUploadOpen] = useState(false)
+  // const [uploadOpen, setUploadOpen] = useState(false)
   const { LoggedIn, setLoggedIn } = useContext(IsLoggedIn)
   const { userDispatch } = useContext(userContext)
   const navigate = useNavigate()
@@ -63,9 +63,9 @@ const Sidebar: React.FC = () => {
     userDispatch({ type: "LOGOUT", data: {} as User })
   }
 
-  const handleUploadToggle = () => {
-    setUploadOpen(!uploadOpen)
-  }
+  // const handleUploadToggle = () => {
+  //   setUploadOpen(!uploadOpen)
+  // }
 
   // Check if the current route matches the given path
   const isActive = (path: string) => {

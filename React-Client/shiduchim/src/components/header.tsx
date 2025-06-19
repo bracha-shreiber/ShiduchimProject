@@ -4,7 +4,7 @@ import { IsLoggedIn } from '../App';
 // import UserFiles from './user/userFiles';
 // import DownloadFile from './download';
 import Avatar from './user/avatar';
-import FileUploader from './uploadFile';
+// import FileUploader from './uploadFile';
 
 const Header = () => {
   const { LoggedIn } = useContext(IsLoggedIn);

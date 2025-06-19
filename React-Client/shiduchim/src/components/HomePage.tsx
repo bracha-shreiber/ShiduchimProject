@@ -61,8 +61,8 @@ import { Button, Box, Typography, Container, Paper } from "@mui/material"
 import UpdateUser from "./user/updateUser"
 import { useNavigate } from "react-router-dom"
 // import Avatar from "./user/avatar";
-import { IsLoggedIn, userContext } from "../App"
-import type { User } from "../types/user"
+import { IsLoggedIn } from "../App"
+// import type { User } from "../types/user"
 import { useContext, useState, useEffect } from "react"
 // import Register from "./user/register"
 import FileUploader from "./uploadFile"
@@ -71,13 +71,13 @@ import Sidebar from "./sideBar"
 
 const HomePage = () => {
   
-  const { LoggedIn, setLoggedIn } = useContext(IsLoggedIn)
+  const { LoggedIn } = useContext(IsLoggedIn)
   // const [mode, setMode] = useState<"signIn" | "signUp">("signIn")
   const [update, setUpdate] = useState<boolean>(false)
-  const { userDispatch } = useContext(userContext)
+  // const { userDispatch } = useContext(userContext)
   const navigate = useNavigate()
   // const [sign, setSign] = useState<boolean>(false)
-  const [showUploader, setShowUploader] = useState<boolean>(false)
+  const [showUploader] = useState<boolean>(false)
   // const [loaded, setLoaded] = useState<boolean>(false)
 
   // Add effect to ensure images are properly loaded
