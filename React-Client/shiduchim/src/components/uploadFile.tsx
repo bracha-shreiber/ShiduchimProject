@@ -346,7 +346,7 @@ const FileUploader = () => {
     try {
       debugger
       // שלב 1: קבלת Presigned URL מהשרת
-      const response = await axios.get("http://localhost:5076/api/upload/presigned-url", {
+      const response = await axios.get(`${url}/upload/presigned-url`, {
         params: { fileName: file.name },
       })
 
