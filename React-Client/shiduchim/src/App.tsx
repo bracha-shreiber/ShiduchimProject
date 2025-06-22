@@ -7,8 +7,8 @@ import { Action, User } from './types/user'
 import reducer from './components/user/reducer'
 import store from './store/store'
 import { RouterApp } from './Router'
-export const url = "http://localhost:5076/api";
-// export const url = import.meta.env.VITE_SHIDUCHIM_API_URL;
+// export const url = "http://localhost:5076/api";
+export const url = import.meta.env.VITE_SHIDUCHIM_API_URL;
 export const userContext = createContext<{ user: User, userDispatch: React.Dispatch<Action> }>({
   user: {} as User,
   userDispatch: () => { }
