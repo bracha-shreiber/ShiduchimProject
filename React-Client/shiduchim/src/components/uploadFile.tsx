@@ -286,7 +286,7 @@ import {
 } from "@mui/icons-material"
 import Header from "./header"
 import Sidebar from "./sideBar"
-import { IsLoggedIn } from "../App"
+import { IsLoggedIn, url } from "../App"
 
 const FileUploader = () => {
   const [file, setFile] = useState<File | null>(null)
@@ -295,6 +295,7 @@ const FileUploader = () => {
   const [uploadStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [errorMessage] = useState('')
   const { LoggedIn } = useContext(IsLoggedIn)
+  
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     debugger
@@ -324,7 +325,8 @@ const FileUploader = () => {
         console.log(`${key}:`, value)
       }
 
-      const response = await axios.post("http://localhost:5076/api/AIResponse", formData);
+
+      const response = await axios.post(`${url}/AIResponse`, formData);
       //   , {
       //   headers: {
       //     "Content-Type": "multipart/form-data",
