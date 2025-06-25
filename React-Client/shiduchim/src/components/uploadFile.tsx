@@ -479,7 +479,7 @@ const formatFileSize = (bytes: number) => {
       {!LoggedIn && <Header />}
 
       {/* Main Content */}
-      <Box
+      {/* <Box
         component="main"
         sx={{
           flexGrow: 1,
@@ -495,7 +495,23 @@ const formatFileSize = (bytes: number) => {
             marginLeft: '0',
           },
         }}
-      >
+      > */}
+      <Box
+  component="main"
+  sx={{
+    position: 'absolute',
+    top: '50%',
+    left: LoggedIn ? 'calc(50% + 130px)' : '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '100%',
+    maxWidth: 600,
+    backgroundColor: '#ffffff',
+    padding: 3,
+    transition: 'left 0.3s ease',
+    zIndex: 1,
+  }}
+>
+
         <Paper
           elevation={8}
           sx={{

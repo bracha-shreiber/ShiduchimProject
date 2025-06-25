@@ -267,7 +267,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { fetchFilesByUserId, downloadFile, showFile } from '../../store/filesStore';
 import { FileData } from '../../types/fileData';
-import Header from '../header';
 import SearchComponent from '../files/search';
 import ShareIcon from '@mui/icons-material/Share';
 import SharingComponent from '../files/shareFiles';
@@ -368,12 +367,11 @@ const UserFiles: React.FC = () => {
 
   return (
     <>
-    {!LoggedIn && <Header/>}
+    {/* {!LoggedIn && <Header/>} */}
     {LoggedIn && <Sidebar/>}
-      {/* <Header /> */}
       <div style={styles.header}>
-        <h2 style={styles.title}>ניהול קבצים</h2>
-        <p style={styles.subtitle}>צפייה וניהול פרופילים של משתמשים</p>
+        <h2 style={styles.title}>קבצים</h2>
+        <p style={styles.subtitle}>צפייה בקבצי הרזומה האישיים</p>
       </div>
       <div style={styles.container}>
         {error && (
@@ -401,7 +399,7 @@ const UserFiles: React.FC = () => {
                     fontSize: '1.1rem',
                     marginBottom: '0.5rem',
                     // marginTop: '2rem',
-                    borderBottom: '1px solid #ddd',
+                    // borderBottom: '1px solid #ddd',
                     paddingBottom: '0.5rem',
                   }}
                   onClick={() => toggleExpandDateGroup(date)}
@@ -491,14 +489,19 @@ const UserFiles: React.FC = () => {
 
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
-    padding: '2rem',
+    position:'fixed',
+    top:150,
+    right:250,
+    // padding: '2rem',
     maxWidth: '100vw',
-    marginTop: '1rem',
+    // marginTop: '1rem',
     fontFamily: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
     direction: 'rtl',
   },
   header: {
-    marginTop: '2rem',
+    position:'fixed',
+    top:50,
+    //marginTop: '2rem',
     marginBottom: '1rem',
     textAlign: 'right',
     marginLeft: '65vw',
@@ -508,7 +511,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   title: {
     fontSize: '2rem',
     fontWeight: 'bold',
-    color: '#333',
+    color: '#722F37',
     margin: 0,
     marginBottom: '0.5rem',
   },
@@ -574,7 +577,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   fileCardHeader: {
     backgroundColor: '#f8f9fa',
     padding: '1rem',
-    borderBottom: '1px solid #eee',
+    // borderBottom: '1px solid #eee',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -601,7 +604,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     justifyContent: 'space-between',
     marginBottom: '0.5rem',
     fontSize: '0.9rem',
-    borderBottom: '1px dotted #eee',
+    // borderBottom: '1px dotted #eee',
     paddingBottom: '0.5rem',
   },
   detailLabel: {

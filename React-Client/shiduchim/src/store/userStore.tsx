@@ -266,6 +266,7 @@ export const loginUser = createAsyncThunk<User, UserLogin, { rejectValue: string
   "Auth/login",
   async (userData, thunkAPI) => {
     try {
+      debugger;
       const response = await axios.post<{ user: User; token: string }>(
         `${url}/Auth/login`,
         userData
