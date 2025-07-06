@@ -1,4 +1,5 @@
-﻿using Resume.Core.Models;
+﻿using Resume.Core.DTOs;
+using Resume.Core.Models;
 
 namespace Resume.Core.IRepository
 {
@@ -10,7 +11,6 @@ namespace Resume.Core.IRepository
         Task UpdateResumeFile(ResumeFile entity);
         Task DeleteResumeFile(int id);
 
-        Task<IEnumerable<AIResponse>> SearchFilesAsync(int userId, string field, string value);
-
+        Task<IEnumerable<AIResponse>> SearchFilesAsync(SearchCriteriaDTO criteria);
     }
 }

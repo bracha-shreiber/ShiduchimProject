@@ -1,4 +1,5 @@
 ﻿using DotNetEnv;
+using Resume.Core.DTOs;
 using Resume.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,6 @@ namespace Resume.Core.IServices
         Task<ResumeFile> AddResumeFile(ResumeFile resumeFile);
         Task UpdateResumeFile(ResumeFile resumeFile);
         Task DeleteResumeFile(int id);
-        Task<IEnumerable<AIResponse>> SearchFilesAsync(int userId, string field, string value);
+        Task<IEnumerable<AIResponse>> SearchFilesAsync(SearchCriteriaDTO criteria);
     }
 }

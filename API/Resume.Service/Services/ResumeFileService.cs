@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Resume.Core.DTOs;
 using Resume.Core.IRepository;
 using Resume.Core.IServices;
 using Resume.Core.Models;
@@ -46,10 +47,9 @@ namespace Resume.Service.Services
         }
 
 
-        public async Task<IEnumerable<AIResponse>> SearchFilesAsync(int userId, string field, string value)
+        public async Task<IEnumerable<AIResponse>> SearchFilesAsync(SearchCriteriaDTO criteria)
         {
-
-            return await _resumeFileRepository.SearchFilesAsync(userId, field, value);
+            return await _resumeFileRepository.SearchFilesAsync(criteria);
         }
 
     }

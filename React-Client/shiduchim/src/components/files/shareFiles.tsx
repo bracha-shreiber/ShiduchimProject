@@ -1,53 +1,215 @@
+// import React, { useState } from 'react';
+// import { useDispatch } from 'react-redux';
+// import { AppDispatch } from '../../store/store';
+// import { shareFile } from '../../store/filesStore';
+
+// interface SharingComponentProps {
+//   resumeFileId: number;
+//   onClose: () => void;
+// }
+
+// const SharingComponent: React.FC<SharingComponentProps> = ({ resumeFileId, onClose }) => {
+//   const [shareAll, setShareAll] = useState(false);
+//   const [targetEmail, setTargetEmail] = useState('');
+//   const [message, setMessage] = useState('');
+//   const dispatch = useDispatch<AppDispatch>();
+
+//   const validateEmail = (email: string) => {
+//     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+//   };
+
+//   const handleShare = async () => {
+//     if (!shareAll && !validateEmail(targetEmail)) {
+//       setMessage('אנא הזן כתובת אימייל תקינה.');
+//       return;
+//     }
+
+//     const result = await dispatch(
+//       shareFile({
+//         resumeFileId,
+//         targetEmail: shareAll ? undefined : targetEmail,
+//         shareAll,
+//       })
+//     );
+
+//     if (shareFile.fulfilled.match(result)) {
+//       setMessage('הקובץ שותף בהצלחה!');
+//       setTargetEmail('');
+//       setTimeout(() => {
+//         setMessage('');
+//         onClose();
+//       }, 2000);
+//     } else {
+//       setMessage('שגיאה בשיתוף הקובץ.');
+//     }
+//   };
+
+//   return (
+//     <div className="p-4 border rounded-lg shadow max-w-md mx-auto bg-white">
+//       <h2 className="text-lg font-semibold mb-4">שיתוף קובץ</h2>
+
+//       <label className="block mb-2 cursor-pointer">
+//         <input
+//           type="radio"
+//           checked={shareAll}
+//           onChange={() => setShareAll(true)}
+//           className="mr-2"
+//         />
+//         שתף את הקובץ עם כל המשתמשים
+//       </label>
+
+//       <label className="block mb-4 cursor-pointer">
+//         <input
+//           type="radio"
+//           checked={!shareAll}
+//           onChange={() => setShareAll(false)}
+//           className="mr-2"
+//         />
+//         שתף עם משתמש ספציפי (הזן אימייל)
+//       </label>
+
+//       {!shareAll && (
+//         <input
+//           type="email"
+//           placeholder="הזן אימייל"
+//           value={targetEmail}
+//           onChange={(e) => setTargetEmail(e.target.value)}
+//           className="border p-2 w-full mb-4 rounded"
+//         />
+//       )}
+
+//       <button
+//         onClick={handleShare}
+//         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full"
+//       >
+//         שתף
+//       </button>
+
+//       {message && <p className="mt-2 text-sm text-center">{message}</p>}
+//     </div>
+//   );
+// };
+
+// export default SharingComponent;
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store/store';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store/store';
 import { shareFile } from '../../store/filesStore';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  TextField,
+  Typography,
+  Box,
+} from '@mui/material';
 
 interface SharingComponentProps {
   resumeFileId: number;
+  open: boolean;
+  onClose: () => void;
 }
 
-const SharingComponent: React.FC<SharingComponentProps> = ({ resumeFileId }) => {
+const SharingComponent: React.FC<SharingComponentProps> = ({ resumeFileId, open, onClose }) => {
+  const [shareAll, setShareAll] = useState(false);
   const [targetEmail, setTargetEmail] = useState('');
   const [message, setMessage] = useState('');
   const dispatch = useDispatch<AppDispatch>();
-  const error = useSelector((state: RootState) => state.files.error);
+
+  const validateEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
   const handleShare = async () => {
-    if (!targetEmail) {
-      setMessage('Please enter an email.');
+    if (!shareAll && !validateEmail(targetEmail)) {
+      setMessage('אנא הזן כתובת אימייל תקינה.');
       return;
     }
 
-    const result = await dispatch(shareFile({ resumeFileId, targetEmail }));
+    const result = await dispatch(
+      shareFile({
+        resumeFileId,
+        targetEmail: shareAll ? undefined : targetEmail,
+        shareAll,
+      })
+    );
 
     if (shareFile.fulfilled.match(result)) {
-      setMessage(result.payload); // success message from backend
+      setMessage('הקובץ שותף בהצלחה!');
       setTargetEmail('');
+      setTimeout(() => {
+        setMessage('');
+        onClose();
+      }, 2000);
     } else {
-      setMessage('Failed to share file.');
+      setMessage('שגיאה בשיתוף הקובץ.');
     }
   };
 
+  const handleClose = () => {
+    setMessage('');
+    setTargetEmail('');
+    setShareAll(false);
+    onClose();
+  };
+
   return (
-    <div className="p-4 border rounded-lg shadow max-w-md mx-auto">
-      <h2 className="text-lg font-semibold mb-2">Share File</h2>
-      <input
-        type="email"
-        className="border p-2 w-full mb-2 rounded"
-        placeholder="Enter email"
-        value={targetEmail}
-        onChange={(e) => setTargetEmail(e.target.value)}
-      />
-      <button
-        onClick={handleShare}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-      >
-        Share
-      </button>
-      {message && <p className="mt-2 text-sm">{message}</p>}
-      {error && <p className="mt-2 text-red-600 text-sm">Error: {error}</p>}
-    </div>
+    <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
+      <DialogTitle>שיתוף קובץ</DialogTitle>
+      <DialogContent>
+        <RadioGroup
+          value={shareAll ? 'all' : 'email'}
+          onChange={(e) => setShareAll(e.target.value === 'all')}
+        >
+          <FormControlLabel
+            value="all"
+            control={<Radio />}
+            label="שתף את הקובץ עם כל המשתמשים"
+          />
+          <FormControlLabel
+            value="email"
+            control={<Radio />}
+            label="שתף עם משתמש ספציפי (הזן אימייל)"
+          />
+        </RadioGroup>
+
+        {!shareAll && (
+          <TextField
+            autoFocus
+            margin="dense"
+            label="אימייל"
+            type="email"
+            fullWidth
+            variant="outlined"
+            value={targetEmail}
+            onChange={(e) => setTargetEmail(e.target.value)}
+            error={!!message && !validateEmail(targetEmail)}
+            helperText={!!message && !validateEmail(targetEmail) ? message : ''}
+          />
+        )}
+
+        {!!message && shareAll && (
+          <Box mt={2}>
+            <Typography color={message.includes('שגיאה') ? 'error' : 'primary'} align="center">
+              {message}
+            </Typography>
+          </Box>
+        )}
+      </DialogContent>
+      <DialogActions sx={{ px: 3, pb: 2 }}>
+        <Button onClick={handleClose} color="inherit">
+          ביטול
+        </Button>
+        <Button onClick={handleShare} variant="contained" color="primary">
+          שתף
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

@@ -15,3 +15,9 @@ export type FileData = {
     placeOfStudy?: string; 
     downloadUrl?: string; 
 }
+
+export interface ShareFilePayload {
+  resumeFileId: number;
+  targetEmail?: string;  // אופציונלי, כי כש`shareAll=true` אין צורך
+  shareAll: boolean;
+}

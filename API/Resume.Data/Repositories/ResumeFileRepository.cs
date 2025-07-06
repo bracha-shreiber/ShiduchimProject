@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Resume.Core.DTOs;
 using Resume.Core.IRepository;
 using Resume.Core.Models;
 using System;
@@ -45,37 +46,59 @@ namespace Resume.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<AIResponse>> SearchFilesAsync(int userId, string field, string value)
+        public async Task<IEnumerable<AIResponse>> SearchFilesAsync(SearchCriteriaDTO criteria)
         {
-            IQueryable<AIResponse> query = _context.AIResponses.Where(f=>f.UserId==userId);
+            IQueryable<AIResponse> query = _context.AIResponses.Where(f => f.UserId == criteria.UserId);
 
-            value = value.Trim().ToLower();
-
-            switch (field.ToLower())
+            if (criteria.Filters != null && criteria.Filters.Any())
             {
-                case "firstname":
-                    query = query.Where(f => f.FirstName.ToLower().Contains(value));
-                    break;
-                case "lastname":
-                    query = query.Where(f => f.LastName.ToLower().Contains(value));
-                    break;
-                case "fathername":
-                    query = query.Where(f => f.FatherName.ToLower().Contains(value));
-                    break;
-                case "mothername":
-                    query = query.Where(f => f.MotherName.ToLower().Contains(value));
-                    break;
-                case "height":
-                    query = query.Where(f => f.Height.ToLower().Contains(value));
-                    break;
-                case "age":
-                    query = query.Where(f => f.Age.ToLower().Contains(value));
-                    break;
-                default:
-                    return new List<AIResponse>(); // or throw error
+                foreach (var filter in criteria.Filters)
+                {
+                    string key = filter.Key?.ToLower() ?? ""; // Fixed: Changed 'filter.Field' to 'filter.Key'
+                    string value = filter.Value?.Trim().ToLower() ?? "";
+
+                    if (string.IsNullOrEmpty(value))
+                        continue;
+
+                    switch (key)
+                    {
+                        case "firstname":
+                            query = query.Where(f => f.FirstName.ToLower().Contains(value));
+                            break;
+                        case "lastname":
+                            query = query.Where(f => f.LastName.ToLower().Contains(value));
+                            break;
+                        case "fathername":
+                            query = query.Where(f => f.FatherName.ToLower().Contains(value));
+                            break;
+                        case "mothername":
+                            query = query.Where(f => f.MotherName.ToLower().Contains(value));
+                            break;
+                        case "height":
+                            query = query.Where(f => f.Height.ToLower().Contains(value));
+                            break;
+                        case "age":
+                            query = query.Where(f => f.Age.ToLower().Contains(value));
+                            break;
+                        case "placeofstudy":
+                            query = query.Where(f => f.PlaceOfStudy.ToLower().Contains(value));
+                            break;
+                        case "occupation":
+                            query = query.Where(f => f.Occupation.ToLower().Contains(value));
+                            break;
+                        case "city":
+                            query = query.Where(f => f.Address.ToLower().Contains(value));
+                            break;
+
+                        default:
+                            // Ignore unknown fields or handle as needed
+                            break;
+                    }
+                }
             }
 
             return await query.ToListAsync();
         }
+
     }
 }

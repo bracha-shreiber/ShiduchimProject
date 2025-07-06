@@ -333,6 +333,7 @@ const FileUploader = () => {
       //     // 'Content-Disposition': 'inline', 
       //   },
       // })
+      sessionStorage.setItem("uploaded", "true");
 
       console.log("Response from DB save:", response.data)
     } catch (error) {

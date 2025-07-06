@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Resume.API.PostModels;
+using Resume.Core.DTOs;
 using Resume.Core.IServices;
 using Resume.Core.Models;
 using System.Runtime.CompilerServices;
@@ -77,14 +78,15 @@ namespace Resume.API.Controllers
             return NoContent();
         }
 
-        [HttpGet("search")]
-        public async Task<IActionResult> Search([FromQuery] int userId, [FromQuery] string field, [FromQuery] string value)
+        [HttpPost("search")]
+        public async Task<IActionResult> Search([FromBody] SearchCriteriaDTO criteria)
         {
-            if (string.IsNullOrWhiteSpace(field) || string.IsNullOrWhiteSpace(value))
-                return BadRequest("Field and value are required.");
+            if (criteria == null || criteria.Filters == null || !criteria.Filters.Any())
+                return BadRequest("No search filters provided.");
 
-            var result = await _resumeFileService.SearchFilesAsync(userId, field, value);
+            var result = await _resumeFileService.SearchFilesAsync(criteria);
             return Ok(result);
         }
+
     }
 }
