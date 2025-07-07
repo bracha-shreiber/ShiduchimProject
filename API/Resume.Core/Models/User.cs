@@ -18,8 +18,8 @@ namespace Resume.Core.Models
         public string Username { get; set; }
         public string PasswordHash { get; set; }
         public string Email { get; set; }
-        public string Address { get; set; }
-        public string Phone { get; set; }
+        public string? Address { get; set; }
+        public string? Phone { get; set; }
         [JsonIgnore]
         public List<AIResponse> Files { get; set; } = new List<AIResponse>();
         public DateTime CreatedAt { get; set; }

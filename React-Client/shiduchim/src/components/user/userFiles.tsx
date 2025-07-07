@@ -1193,6 +1193,11 @@ import ShareIcon from '@mui/icons-material/Share';
 import SharingComponent from '../files/shareFiles';
 import { IsLoggedIn } from '../../App';
 import Sidebar from '../sideBar';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { Menu, MenuItem, IconButton } from '@mui/material';
+// import React from 'react';
 
 const UserFiles: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -1206,6 +1211,10 @@ const UserFiles: React.FC = () => {
   const [shareFileId, setShareFileId] = useState<number | null>(null);
   const [expandedDateGroups, setExpandedDateGroups] = useState<string[]>([]);
   const [viewingFileUrl, setViewingFileUrl] = useState<string | null>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedFileId, setSelectedFileId] = useState<number | null>(null);
+
+
 
   useEffect(() => {
     debugger;
@@ -1214,7 +1223,7 @@ const UserFiles: React.FC = () => {
       setLoading(true);
       dispatch(fetchFilesByUserId(Number(userId)))
         .finally(() => setLoading(false));
-         sessionStorage.removeItem("uploaded");
+      sessionStorage.removeItem("uploaded");
     } else {
       setLoading(false);
     }
@@ -1245,6 +1254,32 @@ const UserFiles: React.FC = () => {
     );
   };
 
+  const handleMoreClick = (event: React.MouseEvent<HTMLButtonElement>, fileId: number) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedFileId(fileId);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+    setSelectedFileId(null);
+  };
+
+  const handleDelete = () => {
+    if (selectedFileId !== null) {
+      // כאן תקרא לפונקציה שמוחקת קובץ לפי selectedFileId
+      // לדוגמה: dispatch(deleteFile(selectedFileId));
+    }
+    handleCloseMenu();
+  };
+
+  const handleUpdate = () => {
+    if (selectedFileId !== null) {
+      // כאן תקרא לפונקציה לעדכון/עריכה של הקובץ לפי selectedFileId
+      // לדוגמה: navigate(`/update-file/${selectedFileId}`);
+    }
+    handleCloseMenu();
+  };
+
   // Group files by createdAt date (formatted to 'YYYY-MM-DD')
   const groupedFiles: Record<string, FileData[]> = files.reduce((acc, file) => {
     const dateObj = new Date(file.createdAt);
@@ -1267,13 +1302,13 @@ const UserFiles: React.FC = () => {
         <p style={styles.subtitle}>Viewing Personal Resume Files</p>
       </div>
       <div style={styles.container}>
-        {error && (
+        {/* {error && (
           <div style={styles.errorContainer}>
             <p style={styles.errorText}>
-              Error: {typeof error === 'string' ? error : (JSON.stringify(error))}
+              Error: {typeof error === 'string' ? error : JSON.stringify(error)}
             </p>
           </div>
-        )}
+        )} */}
 
         <SearchComponent />
 
@@ -1328,7 +1363,7 @@ const UserFiles: React.FC = () => {
                             <div style={styles.detailItem}><span style={styles.detailLabel}>Place of Study:</span><span style={styles.detailValue}>{file.placeOfStudy}</span></div>
                           </div>
 
-                          <div style={styles.fileActions}>
+                          {/* <div style={styles.fileActions}>
                             <button onClick={() => handleViewOriginal(file.fileName)} title="View file">
                               <img src="/images/icons8-eye.gif" alt="View" />
                             </button>
@@ -1337,10 +1372,84 @@ const UserFiles: React.FC = () => {
                             </button>
                             <button onClick={() => { setShareFileId(file.id); setShare(true); }} title='Share file'>
                               <ShareIcon style={{ verticalAlign: 'middle', marginLeft: 4 }} />
-                              
+
                             </button>
+                          </div> */}
+                          <div style={styles.fileActions}>
+                            {/* <button onClick={() => handleViewOriginal(file.fileName)} title="View file">
+                              <img src="/images/icons8-eye.gif" alt="View" />
+                            </button>
+                            <button onClick={() => handleDownload(file.fileName)} title="Download file">
+                              <img src="/images/icons8-download-32.png" alt="Download" />
+                            </button>
+                            <button onClick={() => { setShareFileId(file.id); setShare(true); }} title='Share file'>
+                              <ShareIcon style={{ verticalAlign: 'middle', marginLeft: 4 }} />
+                            </button> */}
+                            <button
+                              onClick={() => handleViewOriginal(file.fileName)}
+                              title="View file"
+                              style={{
+                                all: 'unset',
+                                cursor: 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}
+                            >
+                              <img src="/images/icons8-eye.gif" alt="View" />
+                            </button>
+
+                            <button
+                              onClick={() => handleDownload(file.fileName)}
+                              title="Download file"
+                              style={{
+                                all: 'unset',
+                                cursor: 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}
+                            >
+                              <img src="/images/icons8-download-32.png" alt="Download" />
+                            </button>
+
+                            <button
+                              onClick={() => {
+                                setShareFileId(file.id);
+                                setShare(true);
+                              }}
+                              title="Share file"
+                              style={{
+                                all: 'unset',
+                                cursor: 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}
+                            >
+                              <ShareIcon style={{ verticalAlign: 'middle', marginLeft: 4 }} />
+                            </button>
+
+                            {/* כפתור 3 הנקודות */}
+                            <IconButton
+                              onClick={(e) => handleMoreClick(e, file.id)}
+                              disableRipple
+                              disableFocusRipple
+                              style={{
+                                all: 'unset', // מסיר כל עיצוב ברירת מחדל של כפתור
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}
+                            >
+                              <MoreVertIcon />
+                            </IconButton>
+
                           </div>
+
                         </div>
+
                       );
                     })}
                   </div>
@@ -1366,10 +1475,33 @@ const UserFiles: React.FC = () => {
         </div>
       )}
       {/* {share && shareFileId !== null && <SharingComponent resumeFileId={shareFileId} />} */}
-     
+
       {share && shareFileId !== null && (
-        <SharingComponent resumeFileId={shareFileId} onClose={() => setShare(false)} open={true} />
+        <SharingComponent resumeFileId={shareFileId} onClose={() => setShare(false)} open={share} />
       )}
+      <Menu
+        id="more-menu"
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleCloseMenu}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+      >
+        <MenuItem onClick={handleDelete}>
+          <DeleteIcon fontSize="small" style={{ marginRight: 8 }} />
+          Delete
+        </MenuItem>
+        <MenuItem onClick={handleUpdate}>
+          <EditIcon fontSize="small" style={{ marginRight: 8 }} />
+          Update
+        </MenuItem>
+      </Menu>
     </>
   );
 };
@@ -1460,12 +1592,24 @@ const styles: { [key: string]: React.CSSProperties } = {
     justifyContent: 'flex-start',
     flexDirection: 'row',
   },
+  // fileCard: {
+  //   width: '360px',
+  //   display: 'flex',
+  //   flexDirection: 'column',
+  //   cursor: 'default',
+  // },
   fileCard: {
     width: '360px',
     display: 'flex',
     flexDirection: 'column',
     cursor: 'default',
+    border: '2px solid #722F37', // צבע אדום יין
+    borderRadius: '10px',
+    backgroundColor: '#fff',
+    boxShadow: '0 4px 12px rgba(114, 47, 55, 0.08)', // אופציונלי: הצללה עדינה
+    transition: 'transform 0.2s ease',
   },
+
   fileCardHeader: {
     padding: '1.3rem 1.5rem',
     display: 'flex',
@@ -1486,6 +1630,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: '0 1.2rem 1rem',
   },
   detailItem: {
+
     display: 'flex',
     justifyContent: 'space-between',
     marginBottom: '0.45rem',

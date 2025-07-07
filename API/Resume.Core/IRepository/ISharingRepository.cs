@@ -14,5 +14,9 @@ namespace Resume.Core.IRepository
         Task<User?> GetUserByEmailAsync(string email);
         Task<AIResponse?> GetResumeFileByIdAsync(int fileId);
         Task<IEnumerable<Sharing>> GetAllSharingsAsync();
+        Task<IEnumerable<Sharing>> GetAllSharingsByIdAsync(int userId);
+        
+        Task<string> ShareFileWithAllAsync(int userId, int resumeFileId);
+        Task DeleteAllSharingAsync();
     }
 }
