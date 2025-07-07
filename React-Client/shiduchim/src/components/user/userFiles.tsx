@@ -1204,7 +1204,7 @@ const UserFiles: React.FC = () => {
   const userId = sessionStorage.getItem("userId");
   const { LoggedIn } = useContext(IsLoggedIn);
   const files = useSelector((state: RootState) => state.files.files);
-  const error = useSelector((state: RootState) => state.files.error);
+  // const error = useSelector((state: RootState) => state.files.error);
 
   const [loading, setLoading] = useState(true);
   const [share, setShare] = useState<boolean>(false);
