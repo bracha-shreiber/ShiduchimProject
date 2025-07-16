@@ -1352,15 +1352,15 @@ const UserFiles: React.FC = () => {
                           </div>
 
                           <div style={styles.fileDetails}>
-                            <div style={styles.detailItem}><span style={styles.detailLabel}>First Name:</span><span style={styles.detailValue}>{file.firstName}</span></div>
-                            <div style={styles.detailItem}><span style={styles.detailLabel}>Last Name:</span><span style={styles.detailValue}>{file.lastName}</span></div>
-                            <div style={styles.detailItem}><span style={styles.detailLabel}>Father's Name:</span><span style={styles.detailValue}>{file.fatherName}</span></div>
-                            <div style={styles.detailItem}><span style={styles.detailLabel}>Mother's Name:</span><span style={styles.detailValue}>{file.motherName}</span></div>
-                            <div style={styles.detailItem}><span style={styles.detailLabel}>Address:</span><span style={styles.detailValue}>{file.address}</span></div>
-                            <div style={styles.detailItem}><span style={styles.detailLabel}>Age:</span><span style={styles.detailValue}>{file.age}</span></div>
-                            <div style={styles.detailItem}><span style={styles.detailLabel}>Height:</span><span style={styles.detailValue}>{file.height}</span></div>
-                            <div style={styles.detailItem}><span style={styles.detailLabel}>Occupation:</span><span style={styles.detailValue}>{file.occupation}</span></div>
-                            <div style={styles.detailItem}><span style={styles.detailLabel}>Place of Study:</span><span style={styles.detailValue}>{file.placeOfStudy}</span></div>
+                            <div style={styles.detailItem}><span style={styles.detailLabel}>First Name:</span><span style={styles.detailValue}>{file.firstName?file.firstName:""}</span></div>
+                            <div style={styles.detailItem}><span style={styles.detailLabel}>Last Name:</span><span style={styles.detailValue}>{file.lastName?file.lastName:""}</span></div>
+                            <div style={styles.detailItem}><span style={styles.detailLabel}>Father's Name:</span><span style={styles.detailValue}>{file.fatherName?file.fatherName:""}</span></div>
+                            <div style={styles.detailItem}><span style={styles.detailLabel}>Mother's Name:</span><span style={styles.detailValue}>{file.motherName?file.motherName:""}</span></div>
+                            <div style={styles.detailItem}><span style={styles.detailLabel}>Address:</span><span style={styles.detailValue}>{file.address?file.address:""}</span></div>
+                            <div style={styles.detailItem}><span style={styles.detailLabel}>Age:</span><span style={styles.detailValue}>{file.age?file.age:""}</span></div>
+                            <div style={styles.detailItem}><span style={styles.detailLabel}>Height:</span><span style={styles.detailValue}>{file.height?file.height:""}</span></div>
+                            <div style={styles.detailItem}><span style={styles.detailLabel}>Occupation:</span><span style={styles.detailValue}>{file.occupation?file.occupation:""}</span></div>
+                            <div style={styles.detailItem}><span style={styles.detailLabel}>Place of Study:</span><span style={styles.detailValue}>{file.placeOfStudy?file.placeOfStudy:""}</span></div>
                           </div>
 
                           {/* <div style={styles.fileActions}>
