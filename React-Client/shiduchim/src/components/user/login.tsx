@@ -355,89 +355,274 @@
 //         </Dialog>
 //     );
 // };
-"use client"
-import { useContext, useEffect, useState } from "react"
-import { useForm, type SubmitHandler } from "react-hook-form"
-import axios from "axios"
-import { Box, TextField, Button, Dialog, DialogTitle, DialogContent } from "@mui/material"
-import { IsLoggedIn, userContext } from "../../App"
-import { setError } from "../../store/ErrorSlice"
-import { useDispatch } from "react-redux"
-import type { UserLogin } from "../../types/user"
-import { loginUser } from "../../store/userStore"
-import type { AppDispatch } from "../../store/store"
-import { useNavigate } from "react-router"
-import Header from "../header"
+// "use client"
+// import { useContext, useEffect, useState } from "react"
+// import { useForm, type SubmitHandler } from "react-hook-form"
+// import axios from "axios"
+// import { Box, TextField, Button, Dialog, DialogTitle, DialogContent } from "@mui/material"
+// import { IsLoggedIn, userContext } from "../../App"
+// import { setError } from "../../store/ErrorSlice"
+// import { useDispatch } from "react-redux"
+// import type { UserLogin } from "../../types/user"
+// import { loginUser } from "../../store/userStore"
+// import type { AppDispatch } from "../../store/store"
+// import { useNavigate } from "react-router"
+// import Header from "../header"
+
+// export default () => {
+//   const [close, setClose] = useState<boolean>(true)
+//   const { userDispatch } = useContext(userContext)
+//   const navigate = useNavigate();
+//   const { LoggedIn, setLoggedIn } = useContext(IsLoggedIn)
+//   const {
+//     register,
+//     handleSubmit,
+//     formState: { errors },
+//   } = useForm<UserLogin>()
+//   const dispatch = useDispatch<AppDispatch>()
+//   useEffect(() => {
+//     if (!close) {
+//       navigate("/");
+//     }
+//   }, [close, navigate]);
+
+//   const onSubmit: SubmitHandler<UserLogin> = async (userData) => {
+//     try {
+//       const res = await dispatch(loginUser(userData))
+//       console.log("Login response payload:", res.payload)
+
+//       if (res.payload && typeof res.payload === "object" && "id" in res.payload) {
+//         const user = res.payload as any
+
+//         // 🔐 Save token and userId locally (double-check)
+//         if (user.id) {
+//           sessionStorage.setItem("userId", user.id.toString())
+//           if (user.token) {
+//             sessionStorage.setItem("token", user.token)
+//           }
+//           console.log("Saved userId to sessionStorage:", user.id)
+//         } else {
+//           console.warn("User ID not found in payload.")
+//         }
+
+//         userDispatch({
+//           type: "LOGIN",
+//           data: user,
+//         })
+//         setLoggedIn(true)
+//       } else {
+//         dispatch(setError("Login failed: Invalid response from server."))
+//       }
+//     } catch (error) {
+//       if (axios.isAxiosError(error)) {
+//         const status = error.response?.status
+//         switch (status) {
+//           case 400:
+//             dispatch(setError("Bad Request: Invalid syntax."))
+//             break
+//           case 401:
+//             dispatch(setError("Unauthorized: Invalid credentials."))
+//             break
+//           case 403:
+//             dispatch(setError("Forbidden: Permission denied."))
+//             break
+//           default:
+//             dispatch(setError("Unexpected error occurred."))
+//             break
+//         }
+//       } else {
+//         dispatch(setError("Unexpected error occurred."))
+//       }
+
+//     } finally {
+//       setClose(false)
+//     }
+//   }
+
+//   return (
+//     <>
+//       <Header />
+//       <Dialog
+//         open={!LoggedIn && close}
+//         onClose={() => setClose(false)}
+//         PaperProps={{
+//           sx: {
+//             borderRadius: 2,
+//             boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
+//             overflow: "hidden",
+//           },
+//         }}
+//       >
+//         <DialogTitle
+//           sx={{
+//             backgroundColor: "#722F37",
+//             color: "white",
+//             fontWeight: "bold",
+//             padding: "16px 24px",
+//           }}
+//         >
+//           {"Sign In"}
+//         </DialogTitle>
+//         <DialogContent sx={{ padding: 0 }}>
+//           <Box
+//             sx={{
+//               width: 350,
+//               padding: 3,
+//               backgroundColor: "white",
+//             }}
+//           >
+//             <form onSubmit={handleSubmit(onSubmit)}>
+//               <TextField
+//                 variant="outlined"
+//                 label="Email"
+//                 type="email"
+//                 fullWidth
+//                 margin="normal"
+//                 {...register("email", { required: true })}
+//                 error={!!errors.email}
+//                 helperText={errors.email ? "This field is required" : ""}
+//                 InputProps={{
+//                   sx: {
+//                     borderRadius: 1.5,
+//                     "&.Mui-focused": {
+//                       "& .MuiOutlinedInput-notchedOutline": {
+//                         borderColor: "#722F37",
+//                       },
+//                     },
+//                   },
+//                 }}
+//                 InputLabelProps={{
+//                   sx: {
+//                     "&.Mui-focused": {
+//                       color: "#722F37",
+//                     },
+//                   },
+//                 }}
+//               />
+//               <TextField
+//                 variant="outlined"
+//                 label="Password"
+//                 type="password"
+//                 fullWidth
+//                 margin="normal"
+//                 {...register("password", { required: true })}
+//                 error={!!errors.password}
+//                 helperText={errors.password ? "This field is required" : ""}
+//                 InputProps={{
+//                   sx: {
+//                     borderRadius: 1.5,
+//                     "&.Mui-focused": {
+//                       "& .MuiOutlinedInput-notchedOutline": {
+//                         borderColor: "#722F37",
+//                       },
+//                     },
+//                   },
+//                 }}
+//                 InputLabelProps={{
+//                   sx: {
+//                     "&.Mui-focused": {
+//                       color: "#722F37",
+//                     },
+//                   },
+//                 }}
+//               />
+//               <p>
+//                 Don't have an account?{" "}
+//                 <a href="/signup" style={{ color: '#722F37', cursor: 'pointer' }}>Sign Up</a>
+//               </p>
+
+//               <Button
+//                 type="submit"
+//                 variant="contained"
+//                 fullWidth
+//                 sx={{
+//                   mt: 3,
+//                   mb: 1,
+//                   backgroundColor: "#722F37",
+//                   color: "white",
+//                   borderRadius: 1.5,
+//                   padding: "12px 0",
+//                   textTransform: "none",
+//                   fontWeight: "bold",
+//                   fontSize: "1rem",
+//                   "&:hover": {
+//                     backgroundColor: "#722F37",
+//                   },
+//                 }}
+//               >
+//                 Login
+//               </Button>
+//             </form>
+//           </Box>
+//         </DialogContent>
+//       </Dialog>
+//     </>
+//   )
+// }
+
+import { useContext, useEffect, useState } from "react";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import axios from "axios";
+import {
+  Box, TextField, Button, Dialog, DialogTitle, DialogContent, CircularProgress
+} from "@mui/material";
+import { IsLoggedIn, userContext } from "../../App";
+import { setError } from "../../store/ErrorSlice";
+import { useDispatch } from "react-redux";
+import type { UserLogin } from "../../types/user";
+import { loginUser } from "../../store/userStore";
+import type { AppDispatch } from "../../store/store";
+import { useNavigate } from "react-router";
+import Header from "../header";
 
 export default () => {
-  const [close, setClose] = useState<boolean>(true)
-  const { userDispatch } = useContext(userContext)
+  const [close, setClose] = useState(true);
+  const [loading, setLoading] = useState(false); // ✅ Added
+  const { userDispatch } = useContext(userContext);
   const navigate = useNavigate();
-  const { LoggedIn, setLoggedIn } = useContext(IsLoggedIn)
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<UserLogin>()
-  const dispatch = useDispatch<AppDispatch>()
+  const { LoggedIn, setLoggedIn } = useContext(IsLoggedIn);
+  const { register, handleSubmit, formState: { errors } } = useForm<UserLogin>();
+  const dispatch = useDispatch<AppDispatch>();
+
   useEffect(() => {
-    if (!close) {
-      navigate("/");
-    }
+    if (!close) navigate("/");
   }, [close, navigate]);
 
   const onSubmit: SubmitHandler<UserLogin> = async (userData) => {
     try {
-      const res = await dispatch(loginUser(userData))
-      console.log("Login response payload:", res.payload)
+      setLoading(true); // ✅ Start loading
+      const res = await dispatch(loginUser(userData));
 
       if (res.payload && typeof res.payload === "object" && "id" in res.payload) {
-        const user = res.payload as any
-
-        // 🔐 Save token and userId locally (double-check)
+        const user = res.payload as any;
         if (user.id) {
-          sessionStorage.setItem("userId", user.id.toString())
-          if (user.token) {
-            sessionStorage.setItem("token", user.token)
-          }
-          console.log("Saved userId to sessionStorage:", user.id)
-        } else {
-          console.warn("User ID not found in payload.")
+          sessionStorage.setItem("userId", user.id.toString());
+          if (user.token) sessionStorage.setItem("token", user.token);
         }
-
-        userDispatch({
-          type: "LOGIN",
-          data: user,
-        })
-        setLoggedIn(true)
+        userDispatch({ type: "LOGIN", data: user });
+        setLoggedIn(true);
       } else {
-        dispatch(setError("Login failed: Invalid response from server."))
+        dispatch(setError("Login failed: Invalid response from server."));
       }
+
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const status = error.response?.status
+        const status = error.response?.status;
         switch (status) {
-          case 400:
-            dispatch(setError("Bad Request: Invalid syntax."))
-            break
-          case 401:
-            dispatch(setError("Unauthorized: Invalid credentials."))
-            break
-          case 403:
-            dispatch(setError("Forbidden: Permission denied."))
-            break
-          default:
-            dispatch(setError("Unexpected error occurred."))
-            break
+          case 400: dispatch(setError("Bad Request: Invalid syntax.")); break;
+          case 401: dispatch(setError("Unauthorized: Invalid credentials.")); break;
+          case 403: dispatch(setError("Forbidden: Permission denied.")); break;
+          default: dispatch(setError("Unexpected error occurred.")); break;
         }
       } else {
-        dispatch(setError("Unexpected error occurred."))
+        dispatch(setError("Unexpected error occurred."));
       }
 
     } finally {
-      setClose(false)
+      setLoading(false); // ✅ Stop loading
+      setClose(false);
     }
-  }
+  };
 
   return (
     <>
@@ -453,24 +638,11 @@ export default () => {
           },
         }}
       >
-        <DialogTitle
-          sx={{
-            backgroundColor: "#722F37",
-            color: "white",
-            fontWeight: "bold",
-            padding: "16px 24px",
-          }}
-        >
+        <DialogTitle sx={{ backgroundColor: "#722F37", color: "white", fontWeight: "bold", padding: "16px 24px" }}>
           {"Sign In"}
         </DialogTitle>
         <DialogContent sx={{ padding: 0 }}>
-          <Box
-            sx={{
-              width: 350,
-              padding: 3,
-              backgroundColor: "white",
-            }}
-          >
+          <Box sx={{ width: 350, padding: 3, backgroundColor: "white" }}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <TextField
                 variant="outlined"
@@ -481,23 +653,6 @@ export default () => {
                 {...register("email", { required: true })}
                 error={!!errors.email}
                 helperText={errors.email ? "This field is required" : ""}
-                InputProps={{
-                  sx: {
-                    borderRadius: 1.5,
-                    "&.Mui-focused": {
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "#722F37",
-                      },
-                    },
-                  },
-                }}
-                InputLabelProps={{
-                  sx: {
-                    "&.Mui-focused": {
-                      color: "#722F37",
-                    },
-                  },
-                }}
               />
               <TextField
                 variant="outlined"
@@ -508,33 +663,15 @@ export default () => {
                 {...register("password", { required: true })}
                 error={!!errors.password}
                 helperText={errors.password ? "This field is required" : ""}
-                InputProps={{
-                  sx: {
-                    borderRadius: 1.5,
-                    "&.Mui-focused": {
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "#722F37",
-                      },
-                    },
-                  },
-                }}
-                InputLabelProps={{
-                  sx: {
-                    "&.Mui-focused": {
-                      color: "#722F37",
-                    },
-                  },
-                }}
               />
-              <p>
-                Don't have an account?{" "}
+              <p>Don't have an account?{" "}
                 <a href="/signup" style={{ color: '#722F37', cursor: 'pointer' }}>Sign Up</a>
               </p>
-
               <Button
                 type="submit"
                 variant="contained"
                 fullWidth
+                disabled={loading}
                 sx={{
                   mt: 3,
                   mb: 1,
@@ -545,17 +682,19 @@ export default () => {
                   textTransform: "none",
                   fontWeight: "bold",
                   fontSize: "1rem",
-                  "&:hover": {
+                  "&:hover": { backgroundColor: "#722F37" },
+                   "&.Mui-disabled": {
                     backgroundColor: "#722F37",
+                    color: "white",
                   },
                 }}
               >
-                Login
+                {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Login"}
               </Button>
             </form>
           </Box>
         </DialogContent>
       </Dialog>
     </>
-  )
-}
+  );
+};

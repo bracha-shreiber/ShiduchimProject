@@ -32,6 +32,7 @@ const Header = () => {
               <Link to="/userFiles" style={styles.link}>My Resumes</Link>
               {/* <FileUploader/> */}
               {/* <Link to="/logout" style={styles.link}>Logout</Link> */}
+              
               <Avatar/>
             </>
           )}

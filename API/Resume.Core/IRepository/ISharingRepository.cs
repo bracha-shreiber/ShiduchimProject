@@ -18,5 +18,7 @@ namespace Resume.Core.IRepository
         
         Task<string> ShareFileWithAllAsync(int userId, int resumeFileId);
         Task DeleteAllSharingAsync();
+        Task<IEnumerable<Sharing>> GetSharingsByUserAsync(int userId);
+        Task DeleteSharedFile(int shareId);
     }
 }

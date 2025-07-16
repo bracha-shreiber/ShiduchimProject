@@ -60,6 +60,15 @@ namespace Resume.Service.Services
         {
             await _repository.DeleteAllSharingAsync();
         }
+
+        public async Task<IEnumerable<Sharing>> GetSharingsByUserAsync(int userId)
+        {
+            return await _repository.GetSharingsByUserAsync(userId);
+        }
+        public async Task DeleteSharedFile(int shareId)
+        {
+            await _repository.DeleteSharedFile(shareId);
+        }
     }
 }
 

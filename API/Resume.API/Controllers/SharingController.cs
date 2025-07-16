@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resume.Core.DTOs;
 using Resume.Core.IServices;
+using Resume.Core.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -76,6 +77,18 @@ namespace Resume.API.Controllers
         {
             await _sharingService.DeleteAllSharingAsync();
             return NoContent(); // 204 No Content
+        }
+        [HttpGet("{userId}")]
+        public async Task<IEnumerable<Sharing>> GetSharingsByUserAsync(int userId)
+        {
+            return await _sharingService.GetAllSharingsByIdAsync(userId);
+        }
+        [HttpDelete("{shareId}")]
+        public async Task<IActionResult> DeleteSharedFileAsync(int shareId)
+        {
+            await _sharingService.DeleteSharedFile(shareId);
+            return NoContent();
+
         }
 
     }

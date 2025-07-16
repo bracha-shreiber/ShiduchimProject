@@ -1,11 +1,12 @@
 import {  createBrowserRouter} from "react-router-dom";
 import HomePage from "./components/HomePage";
-import UserFiles from "./components/user/userFiles";
+import UserFiles from "./components/files/userFiles";
 import Login from "./components/user/login";
 import Register from "./components/user/register";
 import AboutComponent from "./components/about";
 import Concat from "./components/concat";
 import FileUploader from "./components/uploadFile";
+import SharedFiles from "./components/files/sharedFiles";
 
 export const RouterApp = createBrowserRouter([
     
@@ -16,6 +17,7 @@ export const RouterApp = createBrowserRouter([
     {path:"/about",element:<AboutComponent/>},
     {path:"/contact",element:<Concat/>},
     {path:"/uploadfile",element:<FileUploader/>},
+    {path:"/sharedFiles",element:<SharedFiles/>},
     
 
 ]

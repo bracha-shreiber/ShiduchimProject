@@ -389,6 +389,39 @@ const Sidebar: React.FC = () => {
                   <ListItemText primary="contact" />
                 </ListItemButton>
               </ListItem>
+              
+
+              <ListItem disablePadding>
+                <ListItemButton
+                  component={Link}
+                  to="/sharedFiles"   // הנתיב של קבצים ששיתפו איתי
+                  selected={isActive("/sharedFiles")}
+                  sx={{
+                    borderRadius: 1,
+                    mb: 0.5,
+                    "&.Mui-selected": {
+                      backgroundColor: "rgba(255, 0, 0, 0.08)",
+                      "&:hover": {
+                        backgroundColor: "rgba(255, 0, 0, 0.12)",
+                      },
+                    },
+                    "&:hover": {
+                      backgroundColor: "rgba(255, 0, 0, 0.04)",
+                    },
+                    "&:hover .MuiListItemText-primary": {
+                      color: "#722F37",
+                    },
+                    "&:hover .MuiSvgIcon-root": {
+                      color: "#722F37",
+                    },
+                  }}
+                >
+                  <ListItemIcon sx={{ minWidth: 40 }}>
+                    <DescriptionIcon sx={{ color: isActive("/sharedFiles") ? "#722F37" : "inherit" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="shared resumes" />
+                </ListItemButton>
+              </ListItem>
             </List>
 
             {/* Footer */}
@@ -449,6 +482,7 @@ const Sidebar: React.FC = () => {
                   <ListItemText primary="sign out" />
                 </ListItemButton>
               </ListItem>
+
             </Box>
           </Box>
         </Drawer>

@@ -2,7 +2,7 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { url } from "../App";
-import { FileData, ShareFilePayload } from "../types/fileData";
+import { FileData, SharedFileData, ShareFilePayload } from "../types/fileData";
 
 
 export const uploadResumeFile = createAsyncThunk<
@@ -203,12 +203,42 @@ export const shareFile = createAsyncThunk<
   }
 );
 
+export const fetchSharedFilesByUserId = createAsyncThunk<
+  SharedFileData[], // טיפוס התוצאה (מערך של אובייקטי שיתוף)
+  number,    // הפרמטר שנשלח (userId)
+  { rejectValue: string }
+>('sharing/fetchByUserId', async (userId, thunkAPI) => {
+  try {
+    const response = await axios.get<SharedFileData[]>(`${url}/Sharing/${userId}`);
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response?.data || 'Failed to fetch shared files');
+  }
+});
+
+export const deleteSharedFile = createAsyncThunk<
+  number,          // נחזיר את ה-ID שנמחק
+  number,          // הפרמטר שנשלח - shareId
+  { rejectValue: string }
+>(
+  'sharing/delete-shared-file',
+  async (shareId, thunkAPI) => {
+    try {
+      await axios.delete(`${url}/Sharing/${shareId}`);
+      return shareId;  // נחזיר את ה-ID כדי לעדכן את ה-state
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response?.data || 'Failed to delete shared file');
+    }
+  }
+);
+
 
 // Slice
 const filesSlice = createSlice({
   name: 'files',
   initialState: {
     files: [] as FileData[],
+    sharedFiles: [] as SharedFileData[],
     error: null as string | null,
     loading: false, // ✅ added loading
   },
@@ -265,7 +295,18 @@ const filesSlice = createSlice({
       .addCase(searchFiles.rejected, (state, action) => {
         state.error = action.payload as string;
         state.loading = false;
-      });
+      })
+      .addCase(fetchSharedFilesByUserId.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(fetchSharedFilesByUserId.fulfilled, (state, action) => {
+      state.sharedFiles = action.payload;
+      state.loading = false;
+    })
+    .addCase(fetchSharedFilesByUserId.rejected, (state, action) => {
+      state.error = action.payload as string;
+      state.loading = false;
+    });
   },
 });
 

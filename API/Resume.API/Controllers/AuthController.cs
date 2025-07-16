@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Crypto;
 using Resume.API.PostModels;
 using Resume.Core.DTOs;
 using Resume.Core.IServices;
 using Resume.Core.Models;
+using Resume.Data;
 
 
 namespace Resume.API.Controllers
@@ -15,6 +17,7 @@ namespace Resume.API.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IMapper _mapper;
+        private readonly ResumeContext _context;
 
         public AuthController(IAuthService authService, IUserService userService, IMapper mapper)
         {
@@ -43,6 +46,11 @@ namespace Resume.API.Controllers
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
+                var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == userPost.Email);
+                if (existingUser != null)
+                {
+                    return BadRequest("This email is already registered.");
+                }
 
                 var passwordHash = BCrypt.Net.BCrypt.HashPassword(userPost.PasswordHash);
 

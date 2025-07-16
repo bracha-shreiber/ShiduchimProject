@@ -93,6 +93,18 @@ namespace Resume.Data.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<Sharing>> GetSharingsByUserAsync(int userId)
+        {
+            return await _context.Sharings.Where(s => s.SharedWithUserID == userId).ToListAsync();
+        }
+
+        public async Task DeleteSharedFile(int shareId)
+        {
+            var shareFile = _context.Sharings.Where(s => s.ShareID == shareId);
+            _context.Sharings.Remove((Sharing)shareFile);
+            await _context.SaveChangesAsync();
+        }
     }
 }
 

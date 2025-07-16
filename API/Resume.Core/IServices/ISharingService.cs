@@ -18,5 +18,7 @@ namespace Resume.Core.IServices
             Task<string> ShareFileWithAllAsync(int userId, int resumeFileId); // חדש
 
         Task DeleteAllSharingAsync();
+        Task<IEnumerable<Sharing>> GetSharingsByUserAsync(int userId);
+        Task DeleteSharedFile(int shareId);
     }
 }

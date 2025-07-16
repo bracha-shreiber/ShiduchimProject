@@ -22,3 +22,25 @@ export interface ShareFilePayload {
   shareAll: boolean;
   userId?: number;
 }
+
+export type SharedFileData = {
+  shareID: number;
+  resumefileID: number;
+  sharedWithUserID: number;
+  sharedByUserID: number;
+  sharedAt: string; // Date as ISO string
+  resumefile: {
+    id: number;
+    fileName: string;
+    firstName: string;
+    lastName: string;
+    fatherName: string;
+    motherName: string;
+    address: string;
+    age: number;
+    height: number;
+    occupation: string;
+    placeOfStudy: string;
+    createdAt: string;
+  };
+};
