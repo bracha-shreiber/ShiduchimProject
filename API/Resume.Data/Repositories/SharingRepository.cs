@@ -27,7 +27,8 @@ namespace Resume.Data.Repositories
 
         public async Task AddSharingAsync(Sharing sharing)
         {
-            _context.Sharings.AddAsync(sharing);
+            sharing.SharedByUserEmail = _context.Users.FirstOrDefault(u => u.ID == sharing.SharedByUserID)?.Email;
+            await _context.Sharings.AddAsync(sharing);
             await _context.SaveChangesAsync();
         }
 
@@ -64,6 +65,7 @@ namespace Resume.Data.Repositories
                     {
                         ResumefileID = resumeFileId,
                         SharedByUserID = userId,
+                        SharedByUserEmail = _context.Users.FirstOrDefault(u => u.ID == userId)?.Email,
                         SharedWithUserID = user.ID,
                         SharedAt = DateTime.UtcNow
                     });
@@ -101,10 +103,15 @@ namespace Resume.Data.Repositories
 
         public async Task DeleteSharedFile(int shareId)
         {
-            var shareFile = _context.Sharings.Where(s => s.ShareID == shareId);
-            _context.Sharings.Remove((Sharing)shareFile);
+            var shareFile = await _context.Sharings.FirstOrDefaultAsync(r => r.ShareID == shareId);
+
+            if (shareFile == null)
+                throw new Exception($"Shared file with ID {shareId} not found.");
+
+            _context.Sharings.Remove(shareFile);
             await _context.SaveChangesAsync();
         }
+
     }
 }
 

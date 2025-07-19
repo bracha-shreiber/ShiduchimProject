@@ -658,6 +658,23 @@ export default () => {
                 {...register("email", { required: true })}
                 error={!!errors.email}
                 helperText={errors.email ? "This field is required" : ""}
+                InputLabelProps={{
+                  sx: {
+                    color: "#722F37",
+                    "&.Mui-focused": {
+                      color: "#722F37",
+                    },
+                  },
+                }}
+                InputProps={{
+                  sx: {
+                    borderRadius: 1.5,
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#722F37",
+                    },
+                  },
+                }}
+
               />
               <TextField
                 variant="outlined"
@@ -668,6 +685,23 @@ export default () => {
                 {...register("password", { required: true })}
                 error={!!errors.password}
                 helperText={errors.password ? "This field is required" : ""}
+                InputLabelProps={{
+                  sx: {
+                    color: "#722F37",
+                    "&.Mui-focused": {
+                      color: "#722F37",
+                    },
+                  },
+                }}
+                InputProps={{
+                  sx: {
+                    borderRadius: 1.5,
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#722F37",
+                    },
+                  },
+                }}
+
               />
               <TextField
                 variant="outlined"
@@ -678,6 +712,23 @@ export default () => {
                 {...register("username", { required: true })}
                 error={!!errors.username}
                 helperText={errors.username ? "This field is required" : ""}
+                InputLabelProps={{
+                  sx: {
+                    color: "#722F37",
+                    "&.Mui-focused": {
+                      color: "#722F37",
+                    },
+                  },
+                }}
+                InputProps={{
+                  sx: {
+                    borderRadius: 1.5,
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#722F37",
+                    },
+                  },
+                }}
+
               />
               <p>Already have an account?{" "}
                 <a href="/signin" style={{ color: "#722F37", cursor: "pointer" }}>Sign In</a>

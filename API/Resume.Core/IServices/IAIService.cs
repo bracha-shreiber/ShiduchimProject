@@ -16,6 +16,7 @@ namespace Resume.Core.IServices
         Task<IEnumerable<AIResponse>> GetFilesByUserIdAsync(int userId);
 
         Task DeleteAllAIResponsesAsync();
+        Task DeleteAiResponseById(int aiResponseId);
 
     }
 }

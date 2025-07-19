@@ -653,6 +653,24 @@ export default () => {
                 {...register("email", { required: true })}
                 error={!!errors.email}
                 helperText={errors.email ? "This field is required" : ""}
+                InputLabelProps={{
+                  sx: {
+                    color: "#722F37",
+                    "&.Mui-focused": {
+                      color: "#722F37",
+                    },
+                  },
+                }}
+                InputProps={{
+                  sx: {
+                    borderRadius: 1.5,
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#722F37",
+                    },
+                  },
+                }}
+
+
               />
               <TextField
                 variant="outlined"
@@ -663,6 +681,23 @@ export default () => {
                 {...register("password", { required: true })}
                 error={!!errors.password}
                 helperText={errors.password ? "This field is required" : ""}
+                InputLabelProps={{
+                  sx: {
+                    color: "#722F37",
+                    "&.Mui-focused": {
+                      color: "#722F37",
+                    },
+                  },
+                }}
+                InputProps={{
+                  sx: {
+                    borderRadius: 1.5,
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#722F37",
+                    },
+                  },
+                }}
+
               />
               <p>Don't have an account?{" "}
                 <a href="/signup" style={{ color: '#722F37', cursor: 'pointer' }}>Sign Up</a>
@@ -683,7 +718,7 @@ export default () => {
                   fontWeight: "bold",
                   fontSize: "1rem",
                   "&:hover": { backgroundColor: "#722F37" },
-                   "&.Mui-disabled": {
+                  "&.Mui-disabled": {
                     backgroundColor: "#722F37",
                     color: "white",
                   },

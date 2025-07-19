@@ -46,7 +46,7 @@ namespace Resume.API.Controllers
             }
             else
             {
-                var result = await _sharingService.ShareFileAsync(request.ResumeFileId, request.TargetEmail);
+                var result = await _sharingService.ShareFileAsync(request.UserId,request.ResumeFileId, request.TargetEmail);
 
                 if (result == "Resume file not found." || result == "Target user not found.")
                     return NotFound(result);

@@ -71,4 +71,16 @@ public class AIRepository : IAIRepository
 
     }
 
+    public async Task DeleteAiResponseById(int aiResponseId)
+    {
+        var resume = await _context.AIResponses.FirstOrDefaultAsync(r => r.Id == aiResponseId);
+
+        if (resume == null)
+            throw new Exception($"AIResponse with ID {aiResponseId} not found.");
+
+        _context.AIResponses.Remove(resume);
+        await _context.SaveChangesAsync();
+    }
+
+
 }

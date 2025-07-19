@@ -14,7 +14,7 @@ namespace Resume.Core.IServices
         Task<IEnumerable<Sharing>> GetAllSharingsByIdAsync( int userId);
 
        
-            Task<string> ShareFileAsync(int resumeFileId, string? targetEmail);
+            Task<string> ShareFileAsync(int userId, int resumeFileId, string? targetEmail);
             Task<string> ShareFileWithAllAsync(int userId, int resumeFileId); // חדש
 
         Task DeleteAllSharingAsync();

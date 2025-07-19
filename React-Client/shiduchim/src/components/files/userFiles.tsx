@@ -1197,6 +1197,11 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Menu, MenuItem, IconButton } from '@mui/material';
+// import { useNavigate } from "react-router-dom"
+import DeleteConfirmationDialog from './DeleteConfirmationDialog';
+import { deleteResumeFile } from '../../store/filesStore'; // לוודא שזה מאותו קובץ שיש בו thunk של מחיקה
+
+
 // import React from 'react';
 
 const UserFiles: React.FC = () => {
@@ -1205,7 +1210,6 @@ const UserFiles: React.FC = () => {
   const { LoggedIn } = useContext(IsLoggedIn);
   const files = useSelector((state: RootState) => state.files.files);
   // const error = useSelector((state: RootState) => state.files.error);
-
   const [loading, setLoading] = useState(true);
   const [share, setShare] = useState<boolean>(false);
   const [shareFileId, setShareFileId] = useState<number | null>(null);
@@ -1213,6 +1217,9 @@ const UserFiles: React.FC = () => {
   const [viewingFileUrl, setViewingFileUrl] = useState<string | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedFileId, setSelectedFileId] = useState<number | null>(null);
+  // const navigate = useNavigate();
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
 
 
 
@@ -1265,12 +1272,45 @@ const UserFiles: React.FC = () => {
   };
 
   const handleDelete = () => {
-    if (selectedFileId !== null) {
-      // כאן תקרא לפונקציה שמוחקת קובץ לפי selectedFileId
-      // לדוגמה: dispatch(deleteFile(selectedFileId));
+  console.log('Clicked delete from menu');
+  if (selectedFileId !== null) {
+    const file = files.find(f => f.id === selectedFileId);
+    setSelectedFileName(file?.fileName || '');
+    console.log('Opening confirmation dialog...');
+    setConfirmDeleteOpen(true);
+  }
+  // אל תקרא פה ל-handleCloseMenu!
+};
+
+
+const confirmDelete = async () => {
+  console.log('Inside confirmDelete');
+  console.log(selectedFileId, selectedFileName);
+  
+  if (selectedFileId !== null) {
+    try {
+      const result = await dispatch(deleteResumeFile(selectedFileId));
+      console.log('Delete result:', result);
+
+      if (deleteResumeFile.fulfilled.match(result)) {
+        console.log('File deleted successfully');
+        setConfirmDeleteOpen(false);
+        setSelectedFileId(null);
+        setSelectedFileName(null);
+        dispatch(fetchFilesByUserId(Number(userId)));
+        handleCloseMenu(); // סגור את התפריט רק אחרי שמחקת
+      } else {
+        console.error('Delete failed:', result);
+      }
+    } catch (err) {
+      console.error('Error in confirmDelete:', err);
     }
-    handleCloseMenu();
-  };
+  }
+};
+
+
+
+
 
   const handleUpdate = () => {
     if (selectedFileId !== null) {
@@ -1352,6 +1392,7 @@ const UserFiles: React.FC = () => {
                           </div>
 
                           <div style={styles.fileDetails}>
+
                             <div style={styles.detailItem}><span style={styles.detailLabel}>First Name:</span><span style={styles.detailValue}>{file.firstName?file.firstName:""}</span></div>
                             <div style={styles.detailItem}><span style={styles.detailLabel}>Last Name:</span><span style={styles.detailValue}>{file.lastName?file.lastName:""}</span></div>
                             <div style={styles.detailItem}><span style={styles.detailLabel}>Father's Name:</span><span style={styles.detailValue}>{file.fatherName?file.fatherName:""}</span></div>
@@ -1502,6 +1543,27 @@ const UserFiles: React.FC = () => {
           Update
         </MenuItem>
       </Menu>
+     {/* <DeleteConfirmationDialog
+          open={confirmDeleteOpen}
+          fileName={selectedFileName || ''}
+          onCancel={() => setConfirmDeleteOpen(false)}
+          onConfirm={confirmDelete}
+        /> */}
+
+      {confirmDeleteOpen && (
+        <DeleteConfirmationDialog
+  open={confirmDeleteOpen}
+  fileName={selectedFileName || ''}
+  onCancel={() => {
+    setConfirmDeleteOpen(false);
+    setSelectedFileId(null);
+    setSelectedFileName(null);
+    handleCloseMenu(); // גם כאן
+  }}
+  onConfirm={confirmDelete}
+/>
+
+      )}
     </>
   );
 };
@@ -1511,17 +1573,20 @@ const styles: { [key: string]: React.CSSProperties } = {
     position: 'fixed',
     top: 150,
     left: 300,
+    right: 0,
     maxWidth: '100vw',
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     direction: 'ltr',
     padding: '1rem 2rem',
     maxHeight: 'calc(100vh - 200px)',
     overflowY: 'auto',
+    
   },
   header: {
     position: 'fixed',
     top: 50,
     left: 300,
+    right: 0,
     textAlign: 'left',
     padding: '0 2rem',
     width: '400px',
@@ -1711,6 +1776,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     boxShadow: '0 0 10px rgba(0,0,0,0.15)',
     transition: 'background-color 0.3s ease',
   },
+  
 };
 
 export default UserFiles;

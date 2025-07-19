@@ -60,6 +60,11 @@ public async Task<IActionResult> DeleteAllAIResponses()
     await _aiService.DeleteAllAIResponsesAsync();
     return NoContent(); // 204 No Content
 }
-
+    [HttpDelete("{aiResponseId}")]
+    public async Task<IActionResult> DeleteAiResponseById(int aiResponseId)
+    {
+        await _aiService.DeleteAiResponseById(aiResponseId);
+        return NoContent();
+    }
 
 }

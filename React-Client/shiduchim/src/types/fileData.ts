@@ -28,6 +28,7 @@ export type SharedFileData = {
   resumefileID: number;
   sharedWithUserID: number;
   sharedByUserID: number;
+  sharedByUserEmail: string;
   sharedAt: string; // Date as ISO string
   resumefile: {
     id: number;

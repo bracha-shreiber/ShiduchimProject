@@ -19,7 +19,7 @@ namespace Resume.Service.Services
             _repository = repository;
         }
 
-        public async Task<string> ShareFileAsync(int resumeFileId, string targetEmail)
+        public async Task<string> ShareFileAsync(int userId, int resumeFileId, string targetEmail)
         {
             var file = await _repository.GetResumeFileByIdAsync(resumeFileId);
             if (file == null)
@@ -37,6 +37,8 @@ namespace Resume.Service.Services
                 ResumefileID = resumeFileId,
                 SharedWithUserID = user.ID,
                 SharedAt = DateTime.Now,
+                SharedByUserID = userId,
+                
             };
 
             await _repository.AddSharingAsync(sharing);

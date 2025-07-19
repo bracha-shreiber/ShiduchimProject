@@ -232,7 +232,21 @@ export const deleteSharedFile = createAsyncThunk<
   }
 );
 
-
+export const deleteResumeFile = createAsyncThunk<
+  number,          // נחזיר את ה-ID שנמחק
+  number,          // הפרמטר שנשלח - resumeFileId
+  { rejectValue: string }
+>(
+  'aiResponse/delete-resume-file',
+  async (aiResponseId, thunkAPI) => {
+    try {
+      await axios.delete(`${url}/AIResponse/${aiResponseId}`);
+      return aiResponseId;  // נחזיר את ה-ID כדי לעדכן את ה-state
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response?.data || 'Failed to delete AI response');
+    }
+  }
+);
 // Slice
 const filesSlice = createSlice({
   name: 'files',
@@ -306,7 +320,14 @@ const filesSlice = createSlice({
     .addCase(fetchSharedFilesByUserId.rejected, (state, action) => {
       state.error = action.payload as string;
       state.loading = false;
-    });
+    })
+    .addCase(deleteResumeFile.fulfilled, (state, action) => {
+  state.files = state.files.filter(file => file.id !== action.payload);
+})
+.addCase(deleteResumeFile.rejected, (state, action) => {
+  state.error = action.payload as string;
+});
+
   },
 });
 

@@ -497,6 +497,7 @@ const SharingComponent: React.FC<SharingComponentProps> = ({ resumeFileId, open,
 
     const result = await dispatch(
       shareFile({
+        userId: sessionStorage.getItem('userId') ? parseInt(sessionStorage.getItem('userId')!) : 0,
         resumeFileId,
         targetEmail: shareAll ? undefined : targetEmail,
         shareAll,

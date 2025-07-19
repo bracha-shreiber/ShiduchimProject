@@ -22,6 +22,7 @@ namespace Resume.Core.Models
         [ForeignKey("SharedWithUser")]
         public int SharedWithUserID { get; set; }
         public int SharedByUserID { get; set; }
+        public string? SharedByUserEmail { get; set; }
         public DateTime SharedAt { get; set; } = DateTime.UtcNow;
         public AIResponse Resumefile { get; set; }
         public User SharedWithUser { get; set; }

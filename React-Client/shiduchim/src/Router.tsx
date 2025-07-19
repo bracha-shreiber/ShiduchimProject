@@ -7,6 +7,7 @@ import AboutComponent from "./components/about";
 import Concat from "./components/concat";
 import FileUploader from "./components/uploadFile";
 import SharedFiles from "./components/files/sharedFiles";
+// import DeleteResumeFile from "./components/files/deleteResumeFile";
 
 export const RouterApp = createBrowserRouter([
     
@@ -18,8 +19,8 @@ export const RouterApp = createBrowserRouter([
     {path:"/contact",element:<Concat/>},
     {path:"/uploadfile",element:<FileUploader/>},
     {path:"/sharedFiles",element:<SharedFiles/>},
+    // {path:"/deleteResumeFile",element:<DeleteResumeFile/>}
     
 
 ]
 )
-
