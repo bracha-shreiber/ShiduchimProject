@@ -281,6 +281,29 @@ export const fetchOpenResumes = createAsyncThunk<
     return thunkAPI.rejectWithValue(error.response?.data || 'Failed to fetch open resumes');
   }
 });
+// Check if a file exists for a given user
+export const checkFileExists = createAsyncThunk<
+  boolean, // ✅ return type (exists)
+  { fileName: string; userId: number },
+  { rejectValue: string }
+>(
+  'files/checkFileExists',
+  async ({ fileName, userId }, thunkAPI) => {
+    try {
+      debugger;
+      const response = await axios.get(`${url}/AIResponse/checkFileExists`, {
+        params: { fileName, userId },
+      });
+console.log("response.data", response.data);
+
+      return response.data.exists as boolean;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data || 'Failed to check if file exists'
+      );
+    }
+  }
+);
 
 
 // Slice
@@ -292,6 +315,10 @@ const filesSlice = createSlice({
     sharedFiles: [] as SharedFileData[],
     error: null as string | null,
     loading: false, // ✅ added loading
+    fileExists: null as boolean | null,
+checkingFile: false,
+checkFileError: null as string | null,
+
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -385,7 +412,21 @@ const filesSlice = createSlice({
       .addCase(fetchOpenResumes.rejected, (state, action) => {
         state.error = action.payload as string;
         state.loading = false;
-      });
+      })
+      .addCase(checkFileExists.pending, (state) => {
+  state.checkingFile = true;
+  state.checkFileError = null;
+  state.fileExists = null;
+})
+.addCase(checkFileExists.fulfilled, (state, action) => {
+  state.checkingFile = false;
+  state.fileExists = action.payload;
+})
+.addCase(checkFileExists.rejected, (state, action) => {
+  state.checkingFile = false;
+  state.checkFileError = action.payload as string;
+})
+
 
 
   },

@@ -19,6 +19,7 @@
     "axios": "^1.8.3",
     "lucide-react": "^0.511.0",
     "openai": "^4.95.1",
+    "pdf-lib": "^1.17.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",

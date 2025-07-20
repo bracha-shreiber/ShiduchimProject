@@ -250,6 +250,8 @@ namespace Resume.Service.Services
         {
             string fileName = resumeFile.FileName;
             string extension = Path.GetExtension(fileName).ToLowerInvariant();
+         
+
 
             string resumeText = extension switch
             {
@@ -327,7 +329,11 @@ namespace Resume.Service.Services
             if (aiResponse == null)
                 throw new Exception("Failed to parse AI response.");
 
-            await _IaIRepository.AddAiResponseAsync(aiResponse, userId, fileName);
+            aiResponse.UserId = userId;
+            aiResponse.FileName = fileName;
+            aiResponse.CreatedAt = DateTime.Now;
+
+            await _IaIRepository.AddAiResponseAsync(aiResponse, userId, fileName, _IaIRepository.CheckFileExistAsync(fileName, userId).Result);
         }
 
         private string ExtractTextFromPdf(IFormFile pdfFile)
@@ -382,8 +388,14 @@ namespace Resume.Service.Services
             response.Occupation = dto.Occupation ?? response.Occupation;
             response.Height = dto.Height ?? response.Height;
             response.Age = dto.Age ?? response.Age;
+            response.UpdatedAt = DateTime.Now;
 
             return await _IaIRepository.UpdateAIResponseAsync(response);
+        }
+
+        public async Task<bool> CheckFileExistAsync(string fileName, int userId)
+        {
+            return await _IaIRepository.CheckFileExistAsync(fileName, userId);
         }
     }
 }

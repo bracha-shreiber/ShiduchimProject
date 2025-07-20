@@ -10,11 +10,12 @@ namespace Resume.Core.IRepository
     public interface IAIRepository
     {
             Task<AIResponse> GetAIResponseByIdAsync(int id);
-            Task AddAiResponseAsync(AIResponse aiResponse, int userId,string fileName);
+            Task AddAiResponseAsync(AIResponse aiResponse, int userId,string fileName, bool existsFile);
         Task<IEnumerable<AIResponse>> GetAllAIResponsesAsync();
         Task<IEnumerable<AIResponse>> GetFilesByUserIdAsync(int userId);
         Task DeleteAllAIResponsesAsync();
         Task DeleteAiResponseById(int aiResponseId);
         Task<AIResponse?> UpdateAIResponseAsync(AIResponse dto);
+        Task<bool> CheckFileExistAsync(string fileName, int userId);
     }
 }

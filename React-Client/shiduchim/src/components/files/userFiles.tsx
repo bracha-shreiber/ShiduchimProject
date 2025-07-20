@@ -1197,12 +1197,13 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { Menu, MenuItem, IconButton } from '@mui/material';
+import { Menu, MenuItem, IconButton, CircularProgress } from '@mui/material';
 // import { useNavigate } from "react-router-dom"
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 import { deleteResumeFile } from '../../store/filesStore'; // לוודא שזה מאותו קובץ שיש בו thunk של מחיקה
 import AIResponseUpdateDialog from './updateFile';
 import DownloadIcon from '@mui/icons-material/Download';
+import UpdateOriginalDialog from './updateOriginalFile';
 
 
 // import React from 'react';
@@ -1224,6 +1225,7 @@ const UserFiles: React.FC = () => {
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
   const [openUpdateDialog, setOpenUpdateDialog] = useState<boolean>(false);
+  const [openUpdateOriginalDialog, setOpenUpdateOriginalDialog] = useState<boolean>(false);
 
 
 
@@ -1251,6 +1253,7 @@ const UserFiles: React.FC = () => {
 
       if (fileUrl) {
         setViewingFileUrl(fileUrl);
+
       } else {
         console.error("Failed to get file URL.");
       }
@@ -1286,6 +1289,12 @@ const UserFiles: React.FC = () => {
   // אל תקרא פה ל-handleCloseMenu!
 };
 
+ const handleUpdateOriginal = () => {
+    console.log('Clicked update original from menu');
+    if (selectedFileId !== null) {
+      setOpenUpdateOriginalDialog(true);
+    }
+  };
 
 const confirmDelete = async () => {
   console.log('Inside confirmDelete');
@@ -1353,10 +1362,16 @@ const confirmDelete = async () => {
         <SearchComponent />
 
         {loading ? (
-          <div style={styles.loadingContainer}>
-            <img src="/images/loading.gif" alt="Loading data..." style={styles.loadingGif} />
+          <div style={styles.loading}>
+            {/* <img src="/images/loading.gif" alt="Loading..." style={{ width: 90 }} /> */}
+            <CircularProgress style={{ color: '#722F37', left:'0'}} size={70}/>
             <p>Loading data...</p>
+
           </div>
+          // <div style={styles.loadingContainer}>
+          //   <img src="/images/loading.gif" alt="Loading data..." style={styles.loadingGif} />
+          //   <p>Loading data...</p>
+          // </div>
         ) : files.length === 0 ? (
           <div style={styles.emptyState}>
             <div style={styles.emptyStateIcon}>📁</div>
@@ -1545,7 +1560,11 @@ const confirmDelete = async () => {
         </MenuItem>
         <MenuItem onClick={handleUpdate}>
           <EditIcon style={styles.icon} />
-          Update
+          Update Details
+        </MenuItem>
+        <MenuItem onClick={handleUpdateOriginal}>
+          <EditIcon style={styles.icon} />
+          Update File
         </MenuItem>
       </Menu>
      {/* <DeleteConfirmationDialog
@@ -1577,7 +1596,16 @@ const confirmDelete = async () => {
     file={files.find(f => f.id === selectedFileId) || null}
   />
 )}
-
+{openUpdateOriginalDialog && (
+    <UpdateOriginalDialog
+      open={openUpdateOriginalDialog}
+      onClose={() => {
+        setOpenUpdateOriginalDialog(false);
+        handleCloseMenu();
+      }}
+      file={files.find(f => f.id === selectedFileId) || null}
+    />
+    )}
 
       </>
   );
@@ -1706,7 +1734,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     maxWidth: '80%',
   },
   fileDetails: {
-    padding: '0 1.2rem 1rem',
+    padding: '0 1rem 1rem',
   },
   detailItem: {
 

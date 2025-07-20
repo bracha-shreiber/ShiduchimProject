@@ -25,6 +25,6 @@ public class AIResponse
     [JsonConverter(typeof(FlexibleStringConverter))]
     public string? Age { get; set; }
     public DateTime? CreatedAt { get; set; } 
-    //public DateTime UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
 }

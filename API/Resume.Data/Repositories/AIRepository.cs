@@ -21,22 +21,43 @@ public class AIRepository : IAIRepository
         return response != null ? response : null;
     }
 
-    public async Task AddAiResponseAsync(AIResponse aiResponse, int userId, string fileName)
+    public async Task AddAiResponseAsync(AIResponse aiResponse, int userId, string fileName,bool existsFile)
     {
-        aiResponse.UserId = userId;
-        aiResponse.FileName = fileName;
-        aiResponse.CreatedAt = DateTime.Now;
-        await _context.AIResponses.AddAsync(aiResponse);
+        //aiResponse.UserId = userId;
+        //aiResponse.FileName = fileName;
+        //aiResponse.CreatedAt = DateTime.Now;
+        if (existsFile)
+        {
+            var existing = await _context.AIResponses
+           .FirstOrDefaultAsync(a => a.FileName == fileName && a.UserId == userId);
+            if (existing != null)
+            {
+                existing.FirstName = aiResponse.FirstName ?? existing.FirstName;
+                existing.FatherName = aiResponse.FatherName ?? existing.FatherName;
+                existing.MotherName = aiResponse.MotherName ?? existing.MotherName;
+                existing.LastName = aiResponse.LastName ?? existing.LastName;
+                existing.Address = aiResponse.Address ?? existing.Address;
+                existing.PlaceOfStudy = aiResponse.PlaceOfStudy ?? existing.PlaceOfStudy;
+                existing.Occupation = aiResponse.Occupation ?? existing.Occupation;
+                existing.Height = aiResponse.Height ?? existing.Height;
+                existing.Age = aiResponse.Age ?? existing.Age;
+                existing.UpdatedAt = DateTime.Now;
+                _context.AIResponses.Update(existing);
+            }
+           
+        }
+        else
+        {
+            await _context.AIResponses.AddAsync(aiResponse);
+
+        }
         Console.WriteLine(aiResponse.Id);
-        //var user = await _context.Users
-        //    .FirstOrDefaultAsync(u => u.ID == userId);
-
-        //if (user == null)
-        //{
-        //    throw new Exception("User not found");
-        //}
-
-        //user.Files.Add(aiResponse);
+       // bool fileExists = await _context.AIResponses
+       //.AnyAsync(r => r.UserId == userId && r.FileName == fileName);
+       // if (fileExists)
+       // {
+       //     throw new Exception($"A file named '{fileName}' already exists for this user.");
+       // }
         await _context.SaveChangesAsync();
     }
     public async Task<IEnumerable<AIResponse>> GetAllAIResponsesAsync()
@@ -90,7 +111,17 @@ public class AIRepository : IAIRepository
         return response;
     }
 
+    public async Task<bool> CheckFileExistAsync(string fileName, int userId)
+    {
+        return await _context.AIResponses
+       .AnyAsync(a => a.FileName == fileName && a.UserId == userId);
 
+    }
 
+    public Task AddAiResponseAsync(AIResponse aiResponse, int userId, string fileName)
+    {
+        throw new NotImplementedException();
+    }
 
+    
 }

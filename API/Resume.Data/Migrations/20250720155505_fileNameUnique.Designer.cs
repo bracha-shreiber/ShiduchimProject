@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Resume.Data;
 
@@ -11,9 +12,11 @@ using Resume.Data;
 namespace Resume.Data.Migrations
 {
     [DbContext(typeof(ResumeContext))]
-    partial class ResumeContextModelSnapshot : ModelSnapshot
+    [Migration("20250720155505_fileNameUnique")]
+    partial class fileNameUnique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,7 +47,7 @@ namespace Resume.Data.Migrations
 
                     b.Property<string>("FileName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("longtext");
@@ -64,13 +67,13 @@ namespace Resume.Data.Migrations
                     b.Property<string>("PlaceOfStudy")
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FileName")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 

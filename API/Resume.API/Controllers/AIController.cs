@@ -37,6 +37,15 @@ public class AIResponseController : ControllerBase
     {
         return await _aiService.GetFilesByUserIdAsync(userId);
     }
+    [HttpGet("checkFileExists")]
+    public async Task<IActionResult> CheckFileExists(string fileName, int userId)
+    {
+        if (string.IsNullOrEmpty(fileName))
+            return BadRequest("FileName is required");
+        bool exists = await _aiService.CheckFileExistAsync(fileName, userId);
+
+        return Ok(new { exists });
+    }
 
 
     [HttpPost]
@@ -57,6 +66,7 @@ public class AIResponseController : ControllerBase
             return StatusCode(500, $"An error occurred: {ex.Message}");
         }
     }
+
     [HttpDelete("all")]
 public async Task<IActionResult> DeleteAllAIResponses()
 {

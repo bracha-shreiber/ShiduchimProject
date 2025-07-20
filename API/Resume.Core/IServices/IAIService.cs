@@ -20,6 +20,7 @@ namespace Resume.Core.IServices
         Task DeleteAiResponseById(int aiResponseId);
 
         Task<AIResponse?> UpdateAIResponseAsync(int id, UpdateAIResponseDTO dto);
+        Task<bool> CheckFileExistAsync(string fileName, int userId);
 
     }
 }

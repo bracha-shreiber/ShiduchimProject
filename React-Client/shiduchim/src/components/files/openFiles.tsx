@@ -39,6 +39,8 @@ const OpenResumes: React.FC = () => {
           <div style={styles.loading}>
             {/* <img src="/images/loading.gif" alt="Loading..." style={{ width: 90 }} /> */}
             <CircularProgress style={{ color: '#722F37', left:'0'}} size={70}/>
+            <p>Loading data...</p>
+
           </div>
         ) : openResumes.length === 0 ? (
           <div style={styles.emptyState}>
@@ -143,16 +145,20 @@ const OpenResumes: React.FC = () => {
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
-    position: 'fixed',
-    top: 100,
-    left: 300,
-    right: 0,
-    padding: '1rem 2rem',
-    maxHeight: 'calc(100vh - 150px)',
-    overflowY: 'auto',
-    background: '#fff',
-    direction: 'ltr',
-  },
+  position: 'fixed',
+  top: 100,
+  left: 300,
+  right: 0,
+  bottom: 0, // חשוב כדי לאפשר יישור אנכי
+  // display: 'flex',
+  // flexDirection: 'column',
+  // alignItems: 'center', // מרכז אופקית
+  justifyContent: 'flex-start', // אפשר גם 'center' אם רוצים גם אנכית
+  padding: '2rem',
+  overflowY: 'auto',
+  background: '#fff',
+},
+
   title: {
     fontSize: '2rem',
     color: '#5D2E46',
@@ -160,9 +166,14 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 'bold',
   },
   loading: {
-    display: 'flex',
-    justifyContent: 'center',
-    padding: '2rem',
+// display: 'flex',
+    // flexDirection: 'column',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // padding: '4rem',
+    color: '#888',
+    fontSize: '1.1rem',
+    fontWeight: '500',
   },
   emptyState: {
     display: 'flex',

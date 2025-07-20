@@ -58,7 +58,9 @@ namespace Resume.Data
                 .WithMany() // אם אתה לא מגדיר רשימת SharedFiles בתוך User
                 .HasForeignKey(s => s.SharedWithUserID)
                 .OnDelete(DeleteBehavior.Restrict);
-
+            //modelBuilder.Entity<AIResponse>()
+            //    .HasIndex(f => f.FileName)
+            //    .IsUnique();
 
         }
 

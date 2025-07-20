@@ -814,7 +814,11 @@ import {
   Paper,
   Alert,
   Fade,
-  CircularProgress
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle
 } from "@mui/material"
 import {
   CloudUpload as CloudUploadIcon,
@@ -823,6 +827,9 @@ import {
 import Header from "./header"
 import Sidebar from "./sideBar"
 import { IsLoggedIn, url } from "../App"
+import { AppDispatch } from "../store/store"
+import { useDispatch } from "react-redux"
+import { checkFileExists } from "../store/filesStore"
 
 const FileUploader = () => {
   const [file, setFile] = useState<File | null>(null)
@@ -830,7 +837,10 @@ const FileUploader = () => {
   const [uploading, setUploading] = useState(false)
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
+  const [existFile, setExistFile] = useState<boolean>(false)
   const { LoggedIn } = useContext(IsLoggedIn)
+  const dispatch = useDispatch<AppDispatch>();
+  const userId = sessionStorage.getItem("userId")
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -842,7 +852,7 @@ const FileUploader = () => {
 
   const saveindb = async (file: File) => {
     try {
-      const userId = sessionStorage.getItem("userId")
+      
       if (!userId) throw new Error("Missing userId in session storage")
 
       const formData = new FormData()
@@ -856,15 +866,35 @@ const FileUploader = () => {
       console.error("Error saving file data:", error)
     }
   }
+  const checkFileExistence = async () => {
+    try {
+      debugger;
+      console.log("Checking file existence for:", file?.name, "User ID:", userId);
+       const existFile = await dispatch(checkFileExists({ fileName: file?.name || '', userId: userId ? Number(userId) : 0 })).unwrap();
+      console.log("File existence check result:", existFile);
+      
+       if (existFile) {
+        setExistFile(true);
+      }
+      else{
+        handleUpload();
+      }
+    } catch (error) {
+      console.error("Error checking file existence:", error)
+    }
+  }
 
   const handleUpload = async () => {
+
     if (!file) return
+    setExistFile(false)
 
     setUploading(true)
     setUploadStatus('idle')
     setErrorMessage('')
 
     try {
+     
       const response = await axios.get(`${url}/upload/presigned-url`, {
         params: { fileName: file.name },
       })
@@ -1005,7 +1035,7 @@ const FileUploader = () => {
           </Box>
 
           <Button
-            onClick={handleUpload}
+            onClick={checkFileExistence}
             variant="contained"
             fullWidth
             disabled={!file || uploading}
@@ -1126,6 +1156,113 @@ const FileUploader = () => {
               </Alert>
             </Fade>
           )}
+{/* <Dialog open={existFile} onClose={() => setExistFile(false)}>
+    <DialogTitle>File Already Exists</DialogTitle>
+    <DialogContent>
+      <Typography>
+        A file with this name already exists. Do you want to replace it?
+      </Typography>
+    </DialogContent>
+    <DialogActions>
+      <Button onClick={() => setExistFile(false)} color="inherit">
+        No
+      </Button>
+      <Button
+        onClick={handleUpload}
+        sx={{ color: "#722F37", fontWeight: "bold" }}
+      >
+        Yes
+      </Button>
+    </DialogActions>
+  </Dialog> */}
+
+  <Dialog
+  open={existFile}
+  onClose={() => setExistFile(false)}
+  PaperProps={{
+    sx: {
+      borderRadius: 4,
+      padding: 2,
+      border: "1px solid rgba(114, 47, 55, 0.2)",
+      boxShadow: "0 10px 40px rgba(114, 47, 55, 0.15)",
+    },
+  }}
+>
+  <DialogTitle
+    sx={{
+      fontWeight: "bold",
+      color: "#722F37",
+      fontSize: "1.5rem",
+      textAlign: "center",
+      pb: 0,
+    }}
+  >
+    File Already Exists
+  </DialogTitle>
+
+  <DialogContent>
+    <Typography
+      sx={{
+        mt: 1,
+        textAlign: "center",
+        fontSize: "1.1rem",
+        color: "#333",
+      }}
+    >
+      A file with this name already exists. <br />
+      Do you want to replace it?
+    </Typography>
+  </DialogContent>
+
+  <DialogActions
+    sx={{
+      justifyContent: "center",
+      mt: 2,
+    }}
+  >
+    <Button
+      onClick={() => setExistFile(false)}
+      variant="outlined"
+      sx={{
+        borderColor: "#aaa",
+        color: "#555",
+        borderRadius: 3,
+        px: 4,
+        py: 1.2,
+        textTransform: "none",
+        fontWeight: "bold",
+        "&:hover": {
+          borderColor: "#888",
+          backgroundColor: "#f5f5f5",
+        },
+      }}
+    >
+      No
+    </Button>
+
+    <Button
+      onClick={handleUpload}
+      variant="contained"
+      sx={{
+        backgroundColor: "#722F37",
+        color: "white",
+        borderRadius: 3,
+        px: 4,
+        py: 1.2,
+        textTransform: "none",
+        fontWeight: "bold",
+        ml: 2,
+        boxShadow: "0 6px 20px rgba(114, 47, 55, 0.3)",
+        "&:hover": {
+          backgroundColor: "#8B3A42",
+          boxShadow: "0 8px 30px rgba(114, 47, 55, 0.4)",
+        },
+      }}
+    >
+      Yes
+    </Button>
+  </DialogActions>
+</Dialog>
 
           <Box
             sx={{
@@ -1154,6 +1291,7 @@ const FileUploader = () => {
         </Paper>
       </Box>
     </Box>
+    
   )
 }
 
