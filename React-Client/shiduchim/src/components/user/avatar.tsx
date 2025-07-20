@@ -6,7 +6,7 @@ export default () => {
     const { user } = useContext(userContext);
 
     const getInitials = (userName:string) => {
-        return (userName.charAt(0).toLowerCase());
+        return (userName.charAt(0).toUpperCase());
     };
 
     return (
@@ -15,7 +15,8 @@ export default () => {
                 bgcolor: "#722F37",
                 position: 'fixed',
                 // top: 60,
-                left: 250
+                left: 30,
+                zIndex: 100000000,
             }}
         >
             {getInitials(user.username ? user.username : '')}

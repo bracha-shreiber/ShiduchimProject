@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure;
+using Microsoft.EntityFrameworkCore;
 using Resume.Core.IRepository;
 using Resume.Data;
 
@@ -81,6 +82,15 @@ public class AIRepository : IAIRepository
         _context.AIResponses.Remove(resume);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<AIResponse> UpdateAIResponseAsync(AIResponse response)
+    {
+        _context.AIResponses.Update(response);
+        await _context.SaveChangesAsync();
+        return response;
+    }
+
+
 
 
 }

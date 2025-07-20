@@ -459,8 +459,7 @@ const SharedFiles: React.FC = () => {
                     {grouped[date].map(s => {
                       const f = s.resumefile;
                       debugger;
-                      console.log(s);
-                      console.log(f);
+                     
                       return (
                         <div key={s.shareID} style={styles.card}>
                           <h3 style={styles.fileName}>{f.fileName ? f.fileName : ''}</h3>

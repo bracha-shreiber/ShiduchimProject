@@ -17,5 +17,6 @@ namespace Resume.Core.IServices
         Task UpdateResumeFile(ResumeFile resumeFile);
         Task DeleteResumeFile(int id);
         Task<IEnumerable<AIResponse>> SearchFilesAsync(SearchCriteriaDTO criteria);
+        Task<List<AIResponse>> GetOpenResumesAsync();
     }
 }

@@ -16,6 +16,7 @@ import {
   Divider,
   useMediaQuery,
   useTheme,
+  
   // Collapse,
 } from "@mui/material"
 import {
@@ -38,6 +39,7 @@ import type { User } from "../types/user"
 // import SearchComponent from "./search-component"
 // import FileUploader from "./uploadFile"
 import { useNavigate } from "react-router-dom"
+import Avatar from "./user/avatar"
 // import SearchComponent from "./files/search"
 
 // Drawer width
@@ -142,6 +144,7 @@ const Sidebar: React.FC = () => {
                 backgroundColor: "rgba(255, 0, 0, 0.03)",
               }}
             >
+              <Avatar />
               <Typography
                 variant="h6"
                 component="div"
@@ -150,7 +153,8 @@ const Sidebar: React.FC = () => {
                   color: "#722F37",
                   textShadow: "1px 1px 2px rgba(0,0,0,0.1)",
                   fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  letterSpacing: "-0.5px",
+                  // letterSpacing: "-0.5px",
+                  direction: "ltr", // RTL support
                 }}
               >
                 Matchmaker Pro
@@ -420,6 +424,38 @@ const Sidebar: React.FC = () => {
                     <DescriptionIcon sx={{ color: isActive("/sharedFiles") ? "#722F37" : "inherit" }} />
                   </ListItemIcon>
                   <ListItemText primary="shared resumes" />
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem disablePadding>
+                <ListItemButton
+                  component={Link}
+                  to="/openResumes"   // הנתיב של קבצים פתוחים
+                  selected={isActive("/openResumes")}
+                  sx={{
+                    borderRadius: 1,
+                    mb: 0.5,
+                    "&.Mui-selected": {
+                      backgroundColor: "rgba(255, 0, 0, 0.08)",
+                      "&:hover": {
+                        backgroundColor: "rgba(255, 0, 0, 0.12)",
+                      },
+                    },
+                    "&:hover": {
+                      backgroundColor: "rgba(255, 0, 0, 0.04)",
+                    },
+                    "&:hover .MuiListItemText-primary": {
+                      color: "#722F37",
+                    },
+                    "&:hover .MuiSvgIcon-root": {
+                      color: "#722F37",
+                    },
+                  }}
+                >
+                  <ListItemIcon sx={{ minWidth: 40 }}>
+                    <DescriptionIcon sx={{ color: isActive("/openResumes") ? "#722F37" : "inherit" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="open resumes" />
                 </ListItemButton>
               </ListItem>
             </List>

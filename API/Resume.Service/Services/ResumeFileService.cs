@@ -52,5 +52,10 @@ namespace Resume.Service.Services
             return await _resumeFileRepository.SearchFilesAsync(criteria);
         }
 
+        public async Task<List<AIResponse>> GetOpenResumesAsync()
+        {
+            return await _resumeFileRepository.GetOpenResumesAsync();
+        }
+
     }
 }

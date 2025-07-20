@@ -19,10 +19,11 @@ namespace Resume.API.Controllers
         private readonly IMapper _mapper;
         private readonly ResumeContext _context;
 
-        public AuthController(IAuthService authService, IUserService userService, IMapper mapper)
+        public AuthController(IAuthService authService, IUserService userService, IMapper mapper,ResumeContext resumeContext)
         {
             _authService = authService;
             _mapper = mapper;
+            _context = resumeContext;
         }
 
         [HttpPost("login")]
@@ -52,7 +53,7 @@ namespace Resume.API.Controllers
                     return BadRequest("This email is already registered.");
                 }
 
-                var passwordHash = BCrypt.Net.BCrypt.HashPassword(userPost.PasswordHash);
+                var passwordHash = BCrypt.Net.BCrypt.HashPassword(userPost.Password);
 
                 var user = new User
                 {

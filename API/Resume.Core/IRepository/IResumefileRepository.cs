@@ -12,5 +12,6 @@ namespace Resume.Core.IRepository
         Task DeleteResumeFile(int id);
 
         Task<IEnumerable<AIResponse>> SearchFilesAsync(SearchCriteriaDTO criteria);
+        Task<List<AIResponse>> GetOpenResumesAsync();
     }
 }

@@ -197,6 +197,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Resume.Core.DTOs;
 
 namespace Resume.Service.Services
 {
@@ -365,6 +366,25 @@ namespace Resume.Service.Services
 
         public async Task DeleteAiResponseById(int aiResponseId) =>
             await _IaIRepository.DeleteAiResponseById(aiResponseId);
+
+        public async Task<AIResponse?> UpdateAIResponseAsync(int id, UpdateAIResponseDTO dto)
+        {
+            var response = await _IaIRepository.GetAIResponseByIdAsync(id);
+            if (response == null) return null;
+
+            // Map fields
+            response.FirstName = dto.FirstName ?? response.FirstName;
+            response.FatherName = dto.FatherName ?? response.FatherName;
+            response.MotherName = dto.MotherName ?? response.MotherName;
+            response.LastName = dto.LastName ?? response.LastName;
+            response.Address = dto.Address ?? response.Address;
+            response.PlaceOfStudy = dto.PlaceOfStudy ?? response.PlaceOfStudy;
+            response.Occupation = dto.Occupation ?? response.Occupation;
+            response.Height = dto.Height ?? response.Height;
+            response.Age = dto.Age ?? response.Age;
+
+            return await _IaIRepository.UpdateAIResponseAsync(response);
+        }
     }
 }
 

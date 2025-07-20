@@ -1196,10 +1196,13 @@ import Sidebar from '../sideBar';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Menu, MenuItem, IconButton } from '@mui/material';
 // import { useNavigate } from "react-router-dom"
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 import { deleteResumeFile } from '../../store/filesStore'; // לוודא שזה מאותו קובץ שיש בו thunk של מחיקה
+import AIResponseUpdateDialog from './updateFile';
+import DownloadIcon from '@mui/icons-material/Download';
 
 
 // import React from 'react';
@@ -1220,6 +1223,7 @@ const UserFiles: React.FC = () => {
   // const navigate = useNavigate();
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
+  const [openUpdateDialog, setOpenUpdateDialog] = useState<boolean>(false);
 
 
 
@@ -1308,16 +1312,12 @@ const confirmDelete = async () => {
   }
 };
 
-
-
-
-
   const handleUpdate = () => {
+    console.log('Clicked update from menu');
     if (selectedFileId !== null) {
-      // כאן תקרא לפונקציה לעדכון/עריכה של הקובץ לפי selectedFileId
-      // לדוגמה: navigate(`/update-file/${selectedFileId}`);
+      setOpenUpdateDialog(true);
     }
-    handleCloseMenu();
+    
   };
 
   // Group files by createdAt date (formatted to 'YYYY-MM-DD')
@@ -1437,7 +1437,8 @@ const confirmDelete = async () => {
                                 justifyContent: 'center',
                               }}
                             >
-                              <img src="/images/icons8-eye.gif" alt="View" />
+                              {/* <img src="/images/icons8-eye.gif" alt="View" /> */}
+                               <VisibilityIcon style={styles.icon} />
                             </button>
 
                             <button
@@ -1451,7 +1452,8 @@ const confirmDelete = async () => {
                                 justifyContent: 'center',
                               }}
                             >
-                              <img src="/images/icons8-download-32.png" alt="Download" />
+                              {/* <img src="/images/icons8-download-32.png" alt="Download" /> */}
+                              <DownloadIcon style={styles.icon} />
                             </button>
 
                             <button
@@ -1468,7 +1470,7 @@ const confirmDelete = async () => {
                                 justifyContent: 'center',
                               }}
                             >
-                              <ShareIcon style={{ verticalAlign: 'middle', marginLeft: 4 }} />
+                              <ShareIcon style={styles.icon} />
                             </button>
 
                             {/* כפתור 3 הנקודות */}
@@ -1476,15 +1478,18 @@ const confirmDelete = async () => {
                               onClick={(e) => handleMoreClick(e, file.id)}
                               disableRipple
                               disableFocusRipple
-                              style={{
+                              style={
+                                {
                                 all: 'unset', // מסיר כל עיצוב ברירת מחדל של כפתור
                                 cursor: 'pointer',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
+                                
+
                               }}
                             >
-                              <MoreVertIcon />
+                              <MoreVertIcon style={styles.icon} />
                             </IconButton>
 
                           </div>
@@ -1535,11 +1540,11 @@ const confirmDelete = async () => {
         }}
       >
         <MenuItem onClick={handleDelete}>
-          <DeleteIcon fontSize="small" style={{ marginRight: 8 }} />
+          <DeleteIcon  style={styles.icon} />
           Delete
         </MenuItem>
         <MenuItem onClick={handleUpdate}>
-          <EditIcon fontSize="small" style={{ marginRight: 8 }} />
+          <EditIcon style={styles.icon} />
           Update
         </MenuItem>
       </Menu>
@@ -1562,9 +1567,19 @@ const confirmDelete = async () => {
   }}
   onConfirm={confirmDelete}
 />
-
       )}
-    </>
+      {openUpdateDialog && (
+  <AIResponseUpdateDialog
+    open={openUpdateDialog}
+    onClose={() =>{setOpenUpdateDialog(false)
+      handleCloseMenu();
+    }}
+    file={files.find(f => f.id === selectedFileId) || null}
+  />
+)}
+
+
+      </>
   );
 };
 
@@ -1580,7 +1595,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: '1rem 2rem',
     maxHeight: 'calc(100vh - 200px)',
     overflowY: 'auto',
-    
   },
   header: {
     position: 'fixed',
@@ -1775,6 +1789,10 @@ const styles: { [key: string]: React.CSSProperties } = {
     cursor: 'pointer',
     boxShadow: '0 0 10px rgba(0,0,0,0.15)',
     transition: 'background-color 0.3s ease',
+  },
+  icon: {
+    color: '#722F37',
+    fontSize: '1.6rem',
   },
   
 };

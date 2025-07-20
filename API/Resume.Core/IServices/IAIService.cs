@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Resume.Core.DTOs;
 using Resume.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,8 @@ namespace Resume.Core.IServices
 
         Task DeleteAllAIResponsesAsync();
         Task DeleteAiResponseById(int aiResponseId);
+
+        Task<AIResponse?> UpdateAIResponseAsync(int id, UpdateAIResponseDTO dto);
 
     }
 }

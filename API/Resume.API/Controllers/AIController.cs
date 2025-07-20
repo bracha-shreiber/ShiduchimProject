@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Resume.Core.DTOs;
 using Resume.Core.IServices;
+using Resume.Service.Services;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -36,6 +37,8 @@ public class AIResponseController : ControllerBase
     {
         return await _aiService.GetFilesByUserIdAsync(userId);
     }
+
+
     [HttpPost]
     public async Task<IActionResult> AddAIResponse([FromForm] AIResponseRequestDto request)
     {
@@ -65,6 +68,14 @@ public async Task<IActionResult> DeleteAllAIResponses()
     {
         await _aiService.DeleteAiResponseById(aiResponseId);
         return NoContent();
+    }
+
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateAIResponseDTO dto)
+    {
+        var result = await _aiService.UpdateAIResponseAsync(id, dto);
+        if (result == null) return NotFound();
+        return Ok(result);
     }
 
 }

@@ -54,7 +54,7 @@ namespace Resume.Data.Repositories
             var file = await _context.AIResponses.FindAsync(resumeFileId);
             if (file == null)
                 return "Resume file not found.";
-            var allUsers = await _context.Users.ToListAsync();
+            var allUsers = await _context.Users.Where(u=>u.ID!=userId).ToListAsync();
             foreach (var user in allUsers)
             {
                 var alreadyShared = await _context.Sharings

@@ -87,6 +87,12 @@ namespace Resume.API.Controllers
             var result = await _resumeFileService.SearchFilesAsync(criteria);
             return Ok(result);
         }
+        [HttpGet("OpenResumes")]
+        public async Task<IActionResult> GetOpenResumes()
+        {
+            var openResumes = await _resumeFileService.GetOpenResumesAsync();
+            return Ok(openResumes);
+        }
 
     }
 }

@@ -458,6 +458,7 @@ import {
   TextField,
   Typography,
   Box,
+  CircularProgress,
 } from '@mui/material';
 
 interface SharingComponentProps {
@@ -473,6 +474,7 @@ const SharingComponent: React.FC<SharingComponentProps> = ({ resumeFileId, open,
   const [messageType, setMessageType] = useState<"success" | "error" | null>(null);
   const [emailError, setEmailError] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
+  const [loading, setLoading] = useState(false); // ← LOADING STATE
 
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -486,42 +488,45 @@ const SharingComponent: React.FC<SharingComponentProps> = ({ resumeFileId, open,
   };
 
   const handleShare = async () => {
-    if (!shareAll && !validateEmail(targetEmail)) {
-      setEmailError(true);
-      setMessage('Please enter a valid email address.');
-      setMessageType('error');
-      return;
+  if (!shareAll && !validateEmail(targetEmail)) {
+    setEmailError(true);
+    setMessage('Please enter a valid email address.');
+    setMessageType('error');
+    return;
+  }
+
+  setEmailError(false);
+  setLoading(true); // ← START LOADING
+
+  const result = await dispatch(
+    shareFile({
+      userId: sessionStorage.getItem('userId') ? parseInt(sessionStorage.getItem('userId')!) : 0,
+      resumeFileId,
+      targetEmail: shareAll ? undefined : targetEmail,
+      shareAll,
+    })
+  );
+
+  if (shareFile.fulfilled.match(result)) {
+    setMessage(result.payload || 'File shared successfully!');
+    setMessageType('success');
+
+    if (!shareAll) {
+      setTargetEmail('');
     }
 
-    setEmailError(false); // clear any previous email error
-
-    const result = await dispatch(
-      shareFile({
-        userId: sessionStorage.getItem('userId') ? parseInt(sessionStorage.getItem('userId')!) : 0,
-        resumeFileId,
-        targetEmail: shareAll ? undefined : targetEmail,
-        shareAll,
-      })
-    );
-
-    if (shareFile.fulfilled.match(result)) {
-      setMessage(result.payload || 'File shared successfully!');
-      setMessageType('success');
-
-      if (!shareAll) {
-        setTargetEmail('');
-      }
-
-      setTimeout(() => {
-        setMessage('');
-        setMessageType(null);
-        onClose();
-      }, 2000);
-    } else {
-      setMessage(result.payload || 'Error sharing the file.');
-      setMessageType('error');
-    }
-  };
+    setTimeout(() => {
+      setMessage('');
+      setMessageType(null);
+      setLoading(false); // ← STOP LOADING
+      onClose();
+    }, 1500);
+  } else {
+    setMessage(result.payload || 'Error sharing the file.');
+    setMessageType('error');
+    setLoading(false); // ← STOP LOADING
+  }
+};
 
   return (
     <Dialog
@@ -636,7 +641,12 @@ const SharingComponent: React.FC<SharingComponentProps> = ({ resumeFileId, open,
             },
           }}
         >
-          Share
+          
+           {loading ? (
+    <CircularProgress size={24} sx={{ color: "white" }} />
+  ) : (
+    "Share"
+  )}
         </Button>
       </DialogActions>
     </Dialog>

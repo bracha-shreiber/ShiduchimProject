@@ -89,6 +89,8 @@ export const showFile = createAsyncThunk(
   'Download_ShowFiles/show-file-content',
   async (fileName: string, thunkAPI) => {
     try {
+      console.log("Fetching file content for:", fileName);
+      
       const response = await axios.get<{ url: string }>(
         `${url}/Download_ShowFiles/show-file-content`,
         { params: { fileName } }
@@ -247,11 +249,46 @@ export const deleteResumeFile = createAsyncThunk<
     }
   }
 );
+
+export const updateResumeFile = createAsyncThunk<
+  FileData,                            // הערך שמוחזר
+  { id: number; updates: Partial<FileData> },  // הפרמטר שנשלח
+  { rejectValue: string }
+>(
+  'aiResponse/update',
+  async ({ id, updates }, thunkAPI) => {
+    try {
+      const response = await axios.patch<FileData>(`${url}/AIResponse/${id}`, updates);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data || 'Failed to update AI response'
+      );
+    }
+  }
+);
+
+// fetchOpenResumes.ts
+export const fetchOpenResumes = createAsyncThunk<
+  FileData[],
+  void,
+  { rejectValue: string }
+>('files/fetchOpenResumes', async (_, thunkAPI) => {
+  try {
+    const response = await axios.get<FileData[]>(`${url}/ResumeFile/OpenResumes`);
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response?.data || 'Failed to fetch open resumes');
+  }
+});
+
+
 // Slice
 const filesSlice = createSlice({
   name: 'files',
   initialState: {
     files: [] as FileData[],
+    openResumes: [] as FileData[],
     sharedFiles: [] as SharedFileData[],
     error: null as string | null,
     loading: false, // ✅ added loading
@@ -326,7 +363,30 @@ const filesSlice = createSlice({
 })
 .addCase(deleteResumeFile.rejected, (state, action) => {
   state.error = action.payload as string;
-});
+})
+.addCase(updateResumeFile.fulfilled, (state, action) => {
+  const index = state.files.findIndex(file => file.id === action.payload.id);
+  if (index !== -1) {
+    state.files[index] = action.payload;
+  }
+})
+.addCase(updateResumeFile.rejected, (state, action) => {
+  state.error = action.payload as string;
+})
+ .addCase(fetchOpenResumes.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchOpenResumes.fulfilled, (state, action) => {
+        state.openResumes = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchOpenResumes.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.loading = false;
+      });
+
 
   },
 });

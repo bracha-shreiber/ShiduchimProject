@@ -15,7 +15,7 @@ namespace Resume.Data.Repositories
         private readonly ResumeContext _context;
         public ResumeFileRepository(ResumeContext context)
         {
-            _context=context;
+            _context = context;
         }
         public async Task<IEnumerable<ResumeFile>> GetAllResumeFiles()
         {
@@ -98,6 +98,14 @@ namespace Resume.Data.Repositories
             }
 
             return await query.ToListAsync();
+        }
+
+        public async Task<List<AIResponse>> GetOpenResumesAsync()
+        {
+            return await _context.AIResponses
+       .OrderByDescending(r => r.CreatedAt)
+       .Take(10)
+       .ToListAsync();
         }
 
     }

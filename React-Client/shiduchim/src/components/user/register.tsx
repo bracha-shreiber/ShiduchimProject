@@ -570,9 +570,9 @@ import {
 } from "@mui/material";
 import { IsLoggedIn, userContext } from "../../App";
 import { setError } from "../../store/ErrorSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { User } from "../../types/user";
-import store, { AppDispatch } from "../../store/store";
+import store, { AppDispatch, RootState } from "../../store/store";
 import { addUser } from "../../store/userStore";
 import { useNavigate } from "react-router-dom";
 import Header from "../header";
@@ -585,6 +585,7 @@ export default () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+  const errorMessage = useSelector((state: RootState) => state.error.error);
 
   useEffect(() => {
     if (!close) navigate("/");
@@ -603,6 +604,7 @@ export default () => {
 
       const response = await store.dispatch(addUser(postData)).unwrap();
 
+
       if (!response.user || response.user.id === 0) {
         console.error("Registration failed: Invalid user ID");
         return;
@@ -612,20 +614,35 @@ export default () => {
       setLoggedIn(true);
 
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const status = error.response?.status;
-        switch (status) {
-          case 400: dispatch(setError("Bad Request")); break;
-          case 401: dispatch(setError("Unauthorized")); break;
-          case 403: dispatch(setError("Forbidden")); break;
-          default: dispatch(setError("Unexpected error")); break;
-        }
-      } else {
-        dispatch(setError("Unexpected error occurred."));
-      }
+      debugger;
+     if (axios.isAxiosError(error)) {
+  if (error.response) {
+    const status = error.response.status;
+    switch (status) {
+      case 400:
+        dispatch(setError(error.response.data));
+        break;
+      case 401:
+        dispatch(setError("Unauthorized"));
+        break;
+      case 403:
+        dispatch(setError("Forbidden"));
+        break;
+      default:
+        dispatch(setError("Unexpected error"));
+    }
+  } else {
+    dispatch(setError("No response from server"));
+  }
+} else {
+  dispatch(setError("Unexpected error occurred."));
+}
+
     } finally {
       setLoading(false); // ✅ Stop loading
       setClose(false);
+      console.log(errorMessage);
+      
     }
   };
 
@@ -733,6 +750,12 @@ export default () => {
               <p>Already have an account?{" "}
                 <a href="/signin" style={{ color: "#722F37", cursor: "pointer" }}>Sign In</a>
               </p>
+              {/* <p style={{ color: "#722F37" }}>{errorMessage}</p> */}
+              {/* {errorMessage && (
+        <Box sx={{ color: "#722F37", mt: 1, textAlign: "center" }}>
+          {errorMessage}
+        </Box>
+      )} */}
               <Button
                 type="submit"
                 variant="contained"
