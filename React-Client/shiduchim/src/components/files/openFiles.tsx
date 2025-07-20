@@ -8,6 +8,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import DownloadIcon from '@mui/icons-material/Download';
 import SearchComponent from './search';
 import Header from '../header';
+import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
 
 const OpenResumes: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,7 +37,8 @@ const OpenResumes: React.FC = () => {
 
         {loading ? (
           <div style={styles.loading}>
-            <img src="/images/loading.gif" alt="Loading..." style={{ width: 90 }} />
+            {/* <img src="/images/loading.gif" alt="Loading..." style={{ width: 90 }} /> */}
+            <CircularProgress style={{ color: '#722F37', left:'0'}} size={70}/>
           </div>
         ) : openResumes.length === 0 ? (
           <div style={styles.emptyState}>

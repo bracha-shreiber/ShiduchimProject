@@ -377,7 +377,7 @@ const Contact = () => {
       <Box
   sx={{
     position: 'absolute',
-    top: '50%',
+    top: '55%',
     left: LoggedIn ? 'calc(50% + 130px)' : '50%',
     transform: 'translate(-50%, -50%)',
     width: '100%',
